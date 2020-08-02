@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "43252205480",
+    "firebase_url": "https://livle-dev-f20c6.firebaseio.com",
+    "project_id": "livle-dev-f20c6",
+    "storage_bucket": "livle-dev-f20c6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:43252205480:android:8380f70f051b41f7a17f9d",
+        "android_client_info": {
+          "package_name": "jp.gr.java_conf.tenma.livle.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "43252205480-po8jt17a032uslm829tddc57a72c02uf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "jp.gr.java_conf.tenma.livle.dev",
+            "certificate_hash": "d8ebb5d35ff2215d8ebe6bc6f3f52a336c567de4"
+          }
+        },
+        {
+          "client_id": "43252205480-fo3fotcgfqecj9lsqq958engpjo503ka.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "jp.gr.java_conf.tenma.livle.dev",
+            "certificate_hash": "7b32e4d436dd52759935bc436c531f319847aec6"
+          }
+        },
+        {
+          "client_id": "43252205480-r98eu103556p2hs9g7coqhvn260g2qgf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdI_bXV5mZY00BD7i5OE-uImnRkd0LEVk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "43252205480-r98eu103556p2hs9g7coqhvn260g2qgf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "43252205480-atd3qcimhgtp600uefl2o290g7sp2ai9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "jp.tenma.livle"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

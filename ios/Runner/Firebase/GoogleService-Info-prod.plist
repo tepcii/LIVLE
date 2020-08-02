@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1004139870263-hiqqgpktm7ve4nmfem7lv856m6pnh17r.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1004139870263-hiqqgpktm7ve4nmfem7lv856m6pnh17r</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>1004139870263-8otc03jcan03f2n05l3n54rd56dai4hl.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAjUTaDr33oPNpFNMdTR0RGfOsNOW54R0c</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1004139870263</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>jp.tenma.livle</string>
+	<key>PROJECT_ID</key>
+	<string>livle-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>livle-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1004139870263:ios:eae492ecbdff5ca5a1e7b2</string>
+	<key>DATABASE_URL</key>
+	<string>https://livle-app.firebaseio.com</string>
+</dict>
+</plist>

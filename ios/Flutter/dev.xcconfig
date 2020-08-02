@@ -1,0 +1,5 @@
+#include "Generated.xcconfig"
+TRACK_WIDGET_CREATION=
+
+FLUTTER_FLAVOR=dev
+PRODUCT_BUNDLE_IDENTIFIER=jp.tenma.livle.dev

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1004139870263",
+    "firebase_url": "https://livle-app.firebaseio.com",
+    "project_id": "livle-app",
+    "storage_bucket": "livle-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1004139870263:android:bb073f0a03ab2e32a1e7b2",
+        "android_client_info": {
+          "package_name": "jp.gr.java_conf.tenma.livle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1004139870263-4ssgjlbfp1a2acddku1rqeh6soh32sm7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxKeTAzNh4IDBoCv1H3dkFzcXDlLpBi6E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1004139870263-4ssgjlbfp1a2acddku1rqeh6soh32sm7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
