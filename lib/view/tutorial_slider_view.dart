@@ -233,101 +233,108 @@ class __UserInfoInputPageState extends State<_UserInfoInputPage> {
           elevation: 0,
           child: Padding(
             padding: EdgeInsets.all(10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: ListView(
+              physics: ClampingScrollPhysics(),
               children: <Widget>[
-                Stack(
-                  children: <Widget>[
-                    Container(
-                      width: 110.0,
-                      height: 110.0,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: AssetImage(_iconImagePath),
+                Center(
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        width: 110.0,
+                        height: 110.0,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: AssetImage(_iconImagePath),
+                          ),
                         ),
                       ),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: GestureDetector(
-                        onTap: pickImage,
-                        child: Container(
-                          padding: EdgeInsets.all(3.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(99.0),
-                            color: AppColor.primaryColor,
-                          ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: GestureDetector(
+                          onTap: pickImage,
                           child: Container(
+                            padding: EdgeInsets.all(3.0),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(99.0),
-                              color: Colors.blue,
+                              color: AppColor.primaryColor,
                             ),
-                            child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Icon(
-                                FontAwesomeIcons.pen,
-                                color: Colors.white,
-                                size: 16,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(99.0),
+                                color: Colors.blue,
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Icon(
+                                  FontAwesomeIcons.pen,
+                                  color: Colors.white,
+                                  size: 16,
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-                Card(
-                  elevation: 10,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 17, left: 17, right: 17,),
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          child: UserIdInput(
-                            onChanged: onChangeUserId,
-                          ),
-                          margin: EdgeInsets.symmetric(
-                            vertical: 20,
-                          ),
-                        ),
-                        Container(
-                          child: UserNameInput(
-                            onChanged: onChangedUserName,
-                          ),
-                          margin: EdgeInsets.only(
-                            bottom: 20,
-                          ),
-                        ),
-                        Container(
-                          child: UserDescTextField(
-                            onChanged: onChangedUserDesc,
-                          ),
-                          margin: EdgeInsets.only(
-                            bottom: 20,
-                          ),
-                        ),
-                        RoundedLoadingButton(
-                          controller: _userRegisterBtnController,
-                          child: Container(
-                            margin: EdgeInsets.symmetric(vertical: 10),
-                            child: Text(
-                              "OK",
-                              style: TextStyle(
-                                fontSize: 23,
-                                fontFamily: "Montserrat",
-                                fontWeight: FontWeight.bold,
-                              ),
+                Padding(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom,
+                  ),
+                  child: Card(
+                    elevation: 10,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 17, left: 17, right: 17,),
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            child: UserIdInput(
+                              onChanged: onChangeUserId,
+                            ),
+                            margin: EdgeInsets.symmetric(
+                              vertical: 20,
                             ),
                           ),
-                          color: AppColor.registerButtonColor,
-                          onPressed: () {
-                            _onPressedRegisterBtn(context);
-                          },
-                        ),
-                      ],
+                          Container(
+                            child: UserNameInput(
+                              onChanged: onChangedUserName,
+                            ),
+                            margin: EdgeInsets.only(
+                              bottom: 20,
+                            ),
+                          ),
+                          Container(
+                            child: UserDescTextField(
+                              onChanged: onChangedUserDesc,
+                            ),
+                            margin: EdgeInsets.only(
+                              bottom: 20,
+                            ),
+                          ),
+                          RoundedLoadingButton(
+                            controller: _userRegisterBtnController,
+                            child: Container(
+                              margin: EdgeInsets.symmetric(vertical: 10),
+                              child: Text(
+                                "OK",
+                                style: TextStyle(
+                                  fontSize: 23,
+                                  fontFamily: "Montserrat",
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            color: AppColor.registerButtonColor,
+                            onPressed: () {
+                              _onPressedRegisterBtn(context);
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
