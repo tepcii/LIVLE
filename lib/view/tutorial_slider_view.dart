@@ -5,16 +5,15 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_overboard/flutter_overboard.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:livle/models/user_model.dart';
 import 'package:livle/services/auth_service.dart';
 import 'package:livle/config/config.dart';
 import 'package:livle/services/storage_service.dart';
 import 'package:livle/view/form_parts/user_info_form.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
-import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class TutorialSliderView extends StatefulWidget {
@@ -66,9 +65,9 @@ class _WelcomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Image.asset(
-            'images/LogoMark.png',
-            width: 200,
-            height: 200,
+            'images/goat.png',
+            width: 500,
+            height: 300,
           ),
           Padding(
             padding: EdgeInsets.only(bottom: 30),
@@ -94,9 +93,9 @@ class _DescriptionPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Image.asset(
-            'images/LogoMark.png',
-            width: 200,
-            height: 200,
+            'images/giraffe.png',
+            width: 500,
+            height: 300,
           ),
           Padding(
             padding: EdgeInsets.only(bottom: 30),
@@ -126,6 +125,7 @@ class __UserInfoInputPageState extends State<_UserInfoInputPage> {
   final _formKey = GlobalKey<FormState>();
   final RoundedLoadingButtonController _userRegisterBtnController = new RoundedLoadingButtonController();
   bool connecting;
+  final StateNotifierProvider<UserStateNotifier> userStateNotifier = StateNotifierProvider((ref) => UserStateNotifier());
   String _iconImagePath;
   String _userId;
   String _userName;
@@ -141,7 +141,8 @@ class __UserInfoInputPageState extends State<_UserInfoInputPage> {
     _pickedImage = false;
   }
 
-  void pickImage() async {
+  // カメラロールから画像を選択後、正方形にトリミングして表示
+  Future<String> pickImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
@@ -172,7 +173,15 @@ class __UserInfoInputPageState extends State<_UserInfoInputPage> {
           _pickedImage = true;
           _iconImagePath = croppedImage.absolute.path;
         });
+        Computed((read) {
+          read(userStateNotifier.state).iconImagePath = croppedImage.absolute.path;
+        });
+        return croppedImage.absolute.path;
+      } else {
+        return "";
       }
+    } else {
+      return "";
     }
   }
 
@@ -194,9 +203,13 @@ class __UserInfoInputPageState extends State<_UserInfoInputPage> {
     });
   }
 
+  // 登録ボタン押下後の処理
   void _onPressedRegisterBtn(BuildContext context) async {
+    // フォームバリデーション
     if (_formKey.currentState.validate()) {
+      // ユーザー登録処理
       if (_pickedImage) {
+        // 画像が選択されていればストレージに登録
         StorageTaskSnapshot snapshot = await StorageService.updateUserIcon(context, _iconImagePath);
         if (snapshot.error == null) {
           _userRegisterBtnController.success();
@@ -206,6 +219,7 @@ class __UserInfoInputPageState extends State<_UserInfoInputPage> {
           print('Something goes wrong');
         }
       }
+
     } else {
       _userRegisterBtnController.error();
       AwesomeDialog(
@@ -233,113 +247,78 @@ class __UserInfoInputPageState extends State<_UserInfoInputPage> {
           elevation: 0,
           child: Padding(
             padding: EdgeInsets.all(10),
-            child: ListView(
-              physics: ClampingScrollPhysics(),
-              children: <Widget>[
-                Center(
-                  child: Stack(
-                    children: <Widget>[
-                      Container(
-                        width: 110.0,
-                        height: 110.0,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            fit: BoxFit.fill,
-                            image: AssetImage(_iconImagePath),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: GestureDetector(
-                          onTap: pickImage,
-                          child: Container(
-                            padding: EdgeInsets.all(3.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(99.0),
-                              color: AppColor.primaryColor,
-                            ),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(99.0),
-                                color: Colors.blue,
+            child: Consumer((context, read) {
+              final userState = read(userStateNotifier.state);
+              return ListView(
+                physics: ClampingScrollPhysics(),
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(top: 20, bottom: MediaQuery.of(context).size.width) * 0.07,
+                    child: IconSelector(userState.iconImagePath, () async {
+                      String pickedImagePath = await pickImage();
+                      if (pickedImagePath != "") userState.iconImagePath = pickedImagePath;
+                    }),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom,
+                    ),
+                    child: Card(
+                      elevation: 10,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 17, left: 17, right: 17,),
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              child: UserIdInput(
+                                onChanged: onChangeUserId,
                               ),
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Icon(
-                                  FontAwesomeIcons.pen,
-                                  color: Colors.white,
-                                  size: 16,
+                              margin: EdgeInsets.symmetric(
+                                vertical: 20,
+                              ),
+                            ),
+                            Container(
+                              child: UserNameInput(
+                                onChanged: onChangedUserName,
+                              ),
+                              margin: EdgeInsets.only(
+                                bottom: 20,
+                              ),
+                            ),
+                            Container(
+                              child: UserDescTextField(
+                                onChanged: onChangedUserDesc,
+                              ),
+                              margin: EdgeInsets.only(
+                                bottom: 20,
+                              ),
+                            ),
+                            RoundedLoadingButton(
+                              controller: _userRegisterBtnController,
+                              child: Container(
+                                margin: EdgeInsets.symmetric(vertical: 10),
+                                child: Text(
+                                  "OK",
+                                  style: TextStyle(
+                                    fontSize: 23,
+                                    fontFamily: "Montserrat",
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
+                              color: AppColor.registerButtonColor,
+                              onPressed: () {
+                                _onPressedRegisterBtn(context);
+                              },
                             ),
-                          ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom,
-                  ),
-                  child: Card(
-                    elevation: 10,
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 17, left: 17, right: 17,),
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            child: UserIdInput(
-                              onChanged: onChangeUserId,
-                            ),
-                            margin: EdgeInsets.symmetric(
-                              vertical: 20,
-                            ),
-                          ),
-                          Container(
-                            child: UserNameInput(
-                              onChanged: onChangedUserName,
-                            ),
-                            margin: EdgeInsets.only(
-                              bottom: 20,
-                            ),
-                          ),
-                          Container(
-                            child: UserDescTextField(
-                              onChanged: onChangedUserDesc,
-                            ),
-                            margin: EdgeInsets.only(
-                              bottom: 20,
-                            ),
-                          ),
-                          RoundedLoadingButton(
-                            controller: _userRegisterBtnController,
-                            child: Container(
-                              margin: EdgeInsets.symmetric(vertical: 10),
-                              child: Text(
-                                "OK",
-                                style: TextStyle(
-                                  fontSize: 23,
-                                  fontFamily: "Montserrat",
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            color: AppColor.registerButtonColor,
-                            onPressed: () {
-                              _onPressedRegisterBtn(context);
-                            },
-                          ),
-                        ],
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              );
+            }),
           ),
         ),
       ),

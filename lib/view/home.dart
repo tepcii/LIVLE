@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:livle/config/config.dart';
-import 'package:livle/state/user_state.dart';
 import 'package:livle/view/common_parts/loading_indicator.dart';
 import 'package:livle/view/management_view.dart';
 
@@ -52,12 +51,9 @@ class _HomeState extends State<Home> {
         ],
         backgroundColor: AppColor.primaryColor,
       ),
-      body: StateNotifierProvider<UserController, UserState>(
-        create: (context) => UserController(),
-        child: _isRegisteredUser ? Center(
-          child: PieChartPage(),
-        ) : LoadingIndicator(),
-      ),
+      body: _isRegisteredUser ? Center(
+        child: PieChartPage(),
+      ) : LoadingIndicator(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       bottomNavigationBar: BottomBar(),
     );

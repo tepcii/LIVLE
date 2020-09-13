@@ -3,6 +3,69 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:livle/config/config.dart';
 import 'package:livle/services/input_validator.dart';
 
+class IconSelector extends StatefulWidget {
+
+  final String _iconImagePath;
+  final Function _onTapEvent;
+
+  IconSelector(this._iconImagePath, this._onTapEvent);
+
+  @override
+  _IconSelectorState createState() => _IconSelectorState();
+}
+
+class _IconSelectorState extends State<IconSelector> {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Stack(
+        children: <Widget>[
+          Container(
+            width: 110.0,
+            height: 110.0,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: AssetImage(widget._iconImagePath),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: GestureDetector(
+              onTap: widget._onTapEvent,
+              child: Container(
+                padding: EdgeInsets.all(3.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(99.0),
+                  color: AppColor.primaryColor,
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(99.0),
+                    color: Colors.blue,
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Icon(
+                      FontAwesomeIcons.pen,
+                      color: Colors.white,
+                      size: 16,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
 class UserIdInput extends StatefulWidget {
   final onChanged;
   UserIdInput({Key key, this.onChanged}) : super(key: key);

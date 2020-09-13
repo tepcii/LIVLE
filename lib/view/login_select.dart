@@ -12,6 +12,9 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class LoginSelect extends StatelessWidget {
 
+  final bool _appleSignInIsAvailable;
+  LoginSelect(this._appleSignInIsAvailable);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +29,7 @@ class LoginSelect extends StatelessWidget {
                 Container(
                   height: 350,
                   width: 360,
-                  child: CardSlider(),
+                  child: CardSlider(_appleSignInIsAvailable),
                 ),
                 Text(
                   "© Copyright 2018-2020 Tenma Endou. All Rights Reserved.",
@@ -57,6 +60,7 @@ class _LogoState extends State<Logo> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    // ロゴアニメーションの定義
     _controller = AnimationController(
       duration: const Duration(seconds: 5),
       vsync: this,
@@ -68,6 +72,7 @@ class _LogoState extends State<Logo> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
+    // アニメーションコントローラーの破棄
     if (_controller != null) {
       _controller.dispose();
       _controller = null;
@@ -99,6 +104,10 @@ class _LogoState extends State<Logo> with SingleTickerProviderStateMixin {
 }
 
 class CardSlider extends StatefulWidget {
+
+  final bool _appleSignInIsAvailable;
+  CardSlider(this._appleSignInIsAvailable);
+
   @override
   _CardSliderState createState() => _CardSliderState();
 }
@@ -125,7 +134,7 @@ class _CardSliderState extends State<CardSlider> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(30.0)),
             ),
-            child: SignInButtons(_pageController),
+            child: SignInButtons(_pageController, widget._appleSignInIsAvailable),
           ),
         ),
         Padding(
@@ -145,7 +154,9 @@ class _CardSliderState extends State<CardSlider> {
 
 class SignInButtons extends StatefulWidget {
   final PageController _controller;
-  SignInButtons(this._controller);
+  final bool _appleSignInIsAvailable;
+  SignInButtons(this._controller, this._appleSignInIsAvailable);
+
   @override
   _SignInButtonsState createState() => _SignInButtonsState();
 }
@@ -153,11 +164,15 @@ class SignInButtons extends StatefulWidget {
 class _SignInButtonsState extends State<SignInButtons>
     with TickerProviderStateMixin {
   final AuthService authService = AuthService();
+  // ボタン押下時にロード中とわかるようにボタンを変形させるアニメーション
   final RoundedLoadingButtonController _twitterBtnController =
       new RoundedLoadingButtonController();
   final RoundedLoadingButtonController _googleBtnController =
       new RoundedLoadingButtonController();
+  final RoundedLoadingButtonController _appleBtnController =
+      new RoundedLoadingButtonController();
 
+  // すぐに別のボタンを押したときに処理が実行されないようにするためのフラグ
   bool send;
 
   @override
@@ -172,7 +187,7 @@ class _SignInButtonsState extends State<SignInButtons>
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
@@ -265,6 +280,34 @@ class _SignInButtonsState extends State<SignInButtons>
               finishSend();
             },
           ),
+          // Apple Sign Inが使用可能ならばAppleログインボタンを表示
+          if (widget._appleSignInIsAvailable) RoundedLoadingButton(
+            controller: _appleBtnController,
+            child: Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(right: 15),
+                    child: Icon(
+                      FontAwesomeIcons.apple,
+                    ),
+                  ),
+                  Text(
+                    "Apple",
+                    style: TextStyle(
+                      fontSize: 23,
+                      fontFamily: "Montserrat",
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            color: AppColor.signinButtonColor,
+            onPressed: _onPressedApple,
+          ),
           Text(
             "ログイン方法を選んでください。",
           ),
@@ -273,6 +316,7 @@ class _SignInButtonsState extends State<SignInButtons>
     );
   }
 
+  // Twitterボタンを押したときの処理
   void _onPressedTwitter() async {
     if (send) return;
     startSend();
@@ -283,12 +327,13 @@ class _SignInButtonsState extends State<SignInButtons>
       thenLogin(context, LoginLogic.Twitter, user.uid);
     } else {
       print("ログイン失敗");
-      showLoginFailedDialog('ネットワーク環境などを確認してください。');
+      showLoginFailedDialog('ネットワーク接続状況を確認してください。');
       _twitterBtnController.reset();
     }
     finishSend();
   }
 
+  // Googleボタンを押したときの処理
   void _onPressedGoogle() async {
     if (send) return;
     startSend();
@@ -299,8 +344,25 @@ class _SignInButtonsState extends State<SignInButtons>
       _googleBtnController.success();
     } else {
       print("ログイン失敗");
-      showLoginFailedDialog('ネットワーク環境などを確認してください。');
+      showLoginFailedDialog('ネットワーク接続状況を確認してください。');
       _googleBtnController.reset();
+    }
+    finishSend();
+  }
+
+  // Appleボタンを押したときの処理
+  void _onPressedApple() async {
+    if (send) return;
+    startSend();
+    final user = await authService.signInWithApple();
+    if (user != null) {
+      print("ログイン成功:" + user.uid);
+      thenLogin(context, LoginLogic.Apple, user.uid);
+      _appleBtnController.success();
+    } else {
+      print("ログイン失敗");
+      showLoginFailedDialog('ネットワーク接続状況を確認してください。');
+      _appleBtnController.reset();
     }
     finishSend();
   }

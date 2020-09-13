@@ -4,7 +4,10 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_twitter/flutter_twitter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:apple_sign_in/apple_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../config/secret.dart' as Secret;
 
@@ -12,11 +15,13 @@ enum LoginLogic {
   Twitter,
   Google,
   Email,
+  Apple,
 }
 
 class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
+  // メールアドレスとパスワードを使ったサインアップ
   Future<Map> signUpWithEmail(String email, String password) async {
     Map authResult = new Map();
     authResult = {
@@ -43,6 +48,7 @@ class AuthService {
     return authResult;
   }
 
+  // メールアドレスとパスワードを使ったサインイン
   Future<Map> signInWithEmail(String email, String password) async {
     Map authResult = new Map();
     authResult = {
@@ -67,7 +73,7 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Twitter APIを通じてログイン情報を取得
-  Future<FirebaseUser> signInWithTwitter() async {
+  Future<User> signInWithTwitter() async {
     final TwitterLogin twitterLogin = TwitterLogin(
       consumerKey: Secret.TWITTER_CUNSUMER_KEY,
       consumerSecret: Secret.TWITTER_SECRET,
@@ -82,12 +88,12 @@ class AuthService {
 
     // Firebaseのユーザー情報に
     final AuthCredential credential = TwitterAuthProvider.getCredential(
-      authToken: result.session.token,
-      authTokenSecret: result.session.secret,
+      accessToken: result.session.token,
+      secret: result.session.secret,
     );
 
-    final FirebaseUser user = await fetchCurrentUserWithCredential(credential);
-    final FirebaseUser currentUser = await _auth.currentUser();
+    final User user = await fetchCurrentUserWithCredential(credential);
+    final User currentUser = _auth.currentUser;
 
     assert(!user.isAnonymous);
     assert(await user.getIdToken() != null);
@@ -97,7 +103,7 @@ class AuthService {
   }
 
   // Googleアカウントでログイン
-  Future<FirebaseUser> signInWithGoogle() async {
+  Future<User> signInWithGoogle() async {
     final GoogleSignIn _googleSignIn = GoogleSignIn();
     GoogleSignInAccount googleCurrentUser = _googleSignIn.currentUser;
     if (googleCurrentUser == null) googleCurrentUser = await _googleSignIn.signInSilently(suppressErrors: true);
@@ -112,10 +118,39 @@ class AuthService {
         idToken: googleAuth.idToken,
         accessToken: googleAuth.accessToken,
       );
-      final FirebaseUser user = await fetchCurrentUserWithCredential(credential);
+      final User user = await fetchCurrentUserWithCredential(credential);
       return user;
     } else {
       return null;
+    }
+
+  }
+
+  // Appleアカウントでログイン
+  Future<User> signInWithApple() async {
+    // 証明書をリクエストして取得
+    final AuthorizationResult appleResult = await AppleSignIn.performRequests([
+      const AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
+    ]);
+
+    // TODO: appleResultがerrorしか返ってこない
+
+    print(appleResult.status);
+    print(appleResult.credential);
+    print(appleResult.error);
+
+    switch (appleResult.status) {
+      case AuthorizationStatus.authorized:
+        final AuthCredential credential = OAuthProvider('apple.com').credential(
+          accessToken: String.fromCharCodes(appleResult.credential.authorizationCode),
+          idToken: String.fromCharCodes(appleResult.credential.identityToken),
+        );
+        return await fetchCurrentUserWithCredential(credential);
+
+      case AuthorizationStatus.error:
+      case AuthorizationStatus.cancelled:
+      default:
+        return null;
     }
 
   }
@@ -126,13 +161,13 @@ class AuthService {
   }
 
   // Firebaseからカレントユーザーを取得
-  Future<FirebaseUser> fetchCurrentUser() async {
-    return await _auth.currentUser();
+  User fetchCurrentUser() {
+    return FirebaseAuth.instance.currentUser;
   }
 
   // カレントユーザーのユーザー情報をCloud Firestoreから取得
   Future<List> fetchUserInfo() async {
-    final FirebaseUser currentUser = await _auth.currentUser();
+    final User currentUser = FirebaseAuth.instance.currentUser;
     final _index = Platform.isIOS ? 0 : 1;
     final providerId = currentUser.providerData[_index].providerId;
     var userDoc;
@@ -147,6 +182,10 @@ class AuthService {
       });
     } else if (providerId == "google.com") {
       await Firestore.instance.collection("users").where("google_uid", isEqualTo: currentUser.uid).getDocuments().then((value) {
+        userDoc = value.documents;
+      });
+    } else if (providerId == "apple.com") {
+      await Firestore.instance.collection("users").where("apple_uid", isEqualTo: currentUser.uid).getDocuments().then((value) {
         userDoc = value.documents;
       });
     }
