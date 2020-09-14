@@ -15,9 +15,9 @@ import 'view/login_select.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   final FirebaseStorage storage = await myFirebaseStorage();
   bool _appleSignInIsAvailable = await AppleSignIn.isAvailable();
-  await Firebase.initializeApp();
 
 //  debugPaintSizeEnabled = true;
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
