@@ -7,10 +7,10 @@ import 'package:state_notifier/state_notifier.dart';
 class UserState {
 
   UserState({
-    this.iconImagePath = "images/default_user_icon.png",
-    this.id = "",
-    this.name = "",
-    this.description = "",
+    this.iconImagePath = 'images/default_user_icon.png',
+    this.id = '',
+    this.name = '',
+    this.description = '',
   });
 
   String iconImagePath;

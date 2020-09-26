@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -6,39 +8,47 @@ import 'package:flutter/services.dart';
 import 'package:livle/config/config.dart';
 import 'package:livle/storage/storage.dart';
 import 'package:livle/view/tutorial_slider_view.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart' hide Provider;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:livle/config/secret.dart';
 
 import 'view/home.dart';
-import 'view/init.dart';
+import 'view/auth_widget.dart';
 import 'view/login_select.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  final FirebaseStorage storage = await myFirebaseStorage();
-  bool _appleSignInIsAvailable = await AppleSignIn.isAvailable();
+  await Firebase.initializeApp(
+    name: AppConfig.APP_NAME,
+    options: FirebaseOptions(
+      appId: Platform.isIOS ? IOS_APP_ID : ANDROID_APP_ID,
+      messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
+      apiKey: FIREBASE_API_KEY,
+      projectId: FIREBASE_PROJECT_ID,
+    ),
+  );
+  final bool _appleSignInIsAvailable = await AppleSignIn.isAvailable();
 
 //  debugPaintSizeEnabled = true;
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
-    runApp(Provider<FirebaseStorage>.value(
-      value: storage,
-      child: ProviderScope(
+    runApp(ProviderScope(
         child: MaterialApp(
           title: 'LIVLE',
           theme: ThemeData(
             primaryColor: AppColor.primaryColor,
             hintColor: Colors.white,
           ),
-          home: Initialize(),
+          home: AuthWidget(
+            signedInBuilder: (BuildContext context) => Home(),
+            nonSignedInBuilder: (BuildContext context) => LoginSelect(_appleSignInIsAvailable),
+          ),
           routes: <String, WidgetBuilder>{
             '/home': (BuildContext context) => Home(),
             '/loginSelect': (BuildContext context) => LoginSelect(_appleSignInIsAvailable),
-            '/tutorial': (BuildContext context) => TutorialSliderView(),
+            '/tutorial': (BuildContext context) => const TutorialSliderView(),
           },
         ),
       ),
-    ));
+    );
   });
 }

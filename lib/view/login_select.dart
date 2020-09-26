@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -12,8 +13,9 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class LoginSelect extends StatelessWidget {
 
+  const LoginSelect(this._appleSignInIsAvailable);
+
   final bool _appleSignInIsAvailable;
-  LoginSelect(this._appleSignInIsAvailable);
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +33,8 @@ class LoginSelect extends StatelessWidget {
                   width: 360,
                   child: CardSlider(_appleSignInIsAvailable),
                 ),
-                Text(
-                  "© Copyright 2018-2020 Tenma Endou. All Rights Reserved.",
+                const Text(
+                  '© Copyright 2018-2020 Tenma Endou. All Rights Reserved.',
                   style: TextStyle(
                     fontSize: 10,
                   ),
@@ -55,7 +57,7 @@ class _LogoState extends State<Logo> with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation<double> animation;
   CurvedAnimation _curvedAnimation;
-  final tween = Tween(begin: 0.0, end: 1.0);
+  final Tween<double> tween = Tween<double>(begin: 0.0, end: 1.0);
 
   @override
   void initState() {
@@ -92,7 +94,7 @@ class _LogoState extends State<Logo> with SingleTickerProviderStateMixin {
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top: 30),
+          margin: const EdgeInsets.only(top: 30),
           child: Image.asset(
             'images/LogoType.png',
             width: 150,
@@ -105,8 +107,9 @@ class _LogoState extends State<Logo> with SingleTickerProviderStateMixin {
 
 class CardSlider extends StatefulWidget {
 
+  const CardSlider(this._appleSignInIsAvailable);
+
   final bool _appleSignInIsAvailable;
-  CardSlider(this._appleSignInIsAvailable);
 
   @override
   _CardSliderState createState() => _CardSliderState();
@@ -118,20 +121,20 @@ class _CardSliderState extends State<CardSlider> {
   @override
   void initState() {
     super.initState();
-    _pageController = new PageController();
+    _pageController = PageController();
   }
 
   @override
   Widget build(BuildContext context) {
     return PageView(
       controller: _pageController,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 10.0),
           child: Card(
             elevation: 10,
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(30.0)),
             ),
             child: SignInButtons(_pageController, widget._appleSignInIsAvailable),
@@ -141,7 +144,7 @@ class _CardSliderState extends State<CardSlider> {
           padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 10.0),
           child: Card(
             elevation: 10,
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(30.0)),
             ),
             child: MailPassForm(_pageController),
@@ -153,9 +156,11 @@ class _CardSliderState extends State<CardSlider> {
 }
 
 class SignInButtons extends StatefulWidget {
+
+  const SignInButtons(this._controller, this._appleSignInIsAvailable);
+
   final PageController _controller;
   final bool _appleSignInIsAvailable;
-  SignInButtons(this._controller, this._appleSignInIsAvailable);
 
   @override
   _SignInButtonsState createState() => _SignInButtonsState();
@@ -165,12 +170,9 @@ class _SignInButtonsState extends State<SignInButtons>
     with TickerProviderStateMixin {
   final AuthService authService = AuthService();
   // ボタン押下時にロード中とわかるようにボタンを変形させるアニメーション
-  final RoundedLoadingButtonController _twitterBtnController =
-      new RoundedLoadingButtonController();
-  final RoundedLoadingButtonController _googleBtnController =
-      new RoundedLoadingButtonController();
-  final RoundedLoadingButtonController _appleBtnController =
-      new RoundedLoadingButtonController();
+  final RoundedLoadingButtonController _twitterBtnController = RoundedLoadingButtonController();
+  final RoundedLoadingButtonController _googleBtnController = RoundedLoadingButtonController();
+  final RoundedLoadingButtonController _appleBtnController = RoundedLoadingButtonController();
 
   // すぐに別のボタンを押したときに処理が実行されないようにするためのフラグ
   bool send;
@@ -194,21 +196,21 @@ class _SignInButtonsState extends State<SignInButtons>
           RoundedLoadingButton(
             controller: _twitterBtnController,
             child: Container(
-              margin: EdgeInsets.symmetric(vertical: 10),
+              margin: const EdgeInsets.symmetric(vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(right: 15),
-                    child: Icon(
+                    margin: const EdgeInsets.only(right: 15),
+                    child: const Icon(
                       FontAwesomeIcons.twitter,
                     ),
                   ),
-                  Text(
-                    "Twitter",
+                  const Text(
+                    'Twitter',
                     style: TextStyle(
                       fontSize: 23,
-                      fontFamily: "Montserrat",
+                      fontFamily: 'Montserrat',
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -221,21 +223,21 @@ class _SignInButtonsState extends State<SignInButtons>
           RoundedLoadingButton(
             controller: _googleBtnController,
             child: Container(
-              margin: EdgeInsets.symmetric(vertical: 10),
+              margin: const EdgeInsets.symmetric(vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(right: 15),
-                    child: Icon(
+                    margin: const EdgeInsets.only(right: 15),
+                    child: const Icon(
                       FontAwesomeIcons.google,
                     ),
                   ),
-                  Text(
-                    "Google",
+                  const Text(
+                    'Google',
                     style: TextStyle(
                       fontSize: 23,
-                      fontFamily: "Montserrat",
+                      fontFamily: 'Montserrat',
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -247,21 +249,21 @@ class _SignInButtonsState extends State<SignInButtons>
           ),
           RaisedButton(
             child: Container(
-              margin: EdgeInsets.symmetric(vertical: 12),
+              margin: const EdgeInsets.symmetric(vertical: 12),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(right: 15),
-                    child: Icon(
+                    margin: const EdgeInsets.only(right: 15),
+                    child: const Icon(
                       FontAwesomeIcons.envelope,
                     ),
                   ),
-                  Text(
-                    "E-mail",
+                  const Text(
+                    'E-mail',
                     style: TextStyle(
                       fontSize: 23,
-                      fontFamily: "Montserrat",
+                      fontFamily: 'Montserrat',
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -269,12 +271,14 @@ class _SignInButtonsState extends State<SignInButtons>
               ),
             ),
             color: AppColor.signinButtonColor,
-            shape: StadiumBorder(),
+            shape: const StadiumBorder(),
             onPressed: () {
-              if (send) return;
+              if (send) {
+                return;
+              }
               startSend();
               widget._controller.nextPage(
-                duration: Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 300),
                 curve: Curves.linear,
               );
               finishSend();
@@ -284,21 +288,21 @@ class _SignInButtonsState extends State<SignInButtons>
           if (widget._appleSignInIsAvailable) RoundedLoadingButton(
             controller: _appleBtnController,
             child: Container(
-              margin: EdgeInsets.symmetric(vertical: 10),
+              margin: const EdgeInsets.symmetric(vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(right: 15),
-                    child: Icon(
+                    margin: const EdgeInsets.only(right: 15),
+                    child: const Icon(
                       FontAwesomeIcons.apple,
                     ),
                   ),
-                  Text(
-                    "Apple",
+                  const Text(
+                    'Apple',
                     style: TextStyle(
                       fontSize: 23,
-                      fontFamily: "Montserrat",
+                      fontFamily: 'Montserrat',
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -308,8 +312,8 @@ class _SignInButtonsState extends State<SignInButtons>
             color: AppColor.signinButtonColor,
             onPressed: _onPressedApple,
           ),
-          Text(
-            "ログイン方法を選んでください。",
+          const Text(
+            'ログイン方法を選んでください。',
           ),
         ],
       ),
@@ -317,16 +321,18 @@ class _SignInButtonsState extends State<SignInButtons>
   }
 
   // Twitterボタンを押したときの処理
-  void _onPressedTwitter() async {
-    if (send) return;
+  Future<void> _onPressedTwitter() async {
+    if (send) {
+      return;
+    }
     startSend();
-    final user = await authService.signInWithTwitter();
+    final User user = await authService.signInWithTwitter();
     if (user != null) {
-      print("ログイン成功:" + user.uid);
+      print('ログイン成功:' + user.uid);
       _twitterBtnController.success();
-      thenLogin(context, LoginLogic.Twitter, user.uid);
+      thenLogin(context, LoginLogic.Twitter);
     } else {
-      print("ログイン失敗");
+      print('ログイン失敗');
       showLoginFailedDialog('ネットワーク接続状況を確認してください。');
       _twitterBtnController.reset();
     }
@@ -334,16 +340,18 @@ class _SignInButtonsState extends State<SignInButtons>
   }
 
   // Googleボタンを押したときの処理
-  void _onPressedGoogle() async {
-    if (send) return;
+  Future<void> _onPressedGoogle() async {
+    if (send) {
+      return;
+    }
     startSend();
-    final user = await authService.signInWithGoogle();
+    final User user = await authService.signInWithGoogle();
     if (user != null) {
-      print("ログイン成功:" + user.uid);
-      thenLogin(context, LoginLogic.Google, user.uid);
+      print('ログイン成功:' + user.uid);
+      thenLogin(context, LoginLogic.Google);
       _googleBtnController.success();
     } else {
-      print("ログイン失敗");
+      print('ログイン失敗');
       showLoginFailedDialog('ネットワーク接続状況を確認してください。');
       _googleBtnController.reset();
     }
@@ -351,16 +359,18 @@ class _SignInButtonsState extends State<SignInButtons>
   }
 
   // Appleボタンを押したときの処理
-  void _onPressedApple() async {
-    if (send) return;
+  Future<void> _onPressedApple() async {
+    if (send) {
+      return;
+    }
     startSend();
-    final user = await authService.signInWithApple();
+    final User user = await authService.signInWithApple();
     if (user != null) {
-      print("ログイン成功:" + user.uid);
-      thenLogin(context, LoginLogic.Apple, user.uid);
+      print('ログイン成功:' + user.uid);
+      thenLogin(context, LoginLogic.Apple);
       _appleBtnController.success();
     } else {
-      print("ログイン失敗");
+      print('ログイン失敗');
       showLoginFailedDialog('ネットワーク接続状況を確認してください。');
       _appleBtnController.reset();
     }
@@ -382,7 +392,7 @@ class _SignInButtonsState extends State<SignInButtons>
 }
 
 class MailPassForm extends StatefulWidget {
-  MailPassForm(this._controller);
+  const MailPassForm(this._controller);
   final PageController _controller;
   @override
   _MailPassFormState createState() => _MailPassFormState();
@@ -392,7 +402,7 @@ class _MailPassFormState extends State<MailPassForm> {
   final RoundedLoadingButtonController _loginButtonController =
       RoundedLoadingButtonController();
   final AuthService authService = AuthService();
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _mail;
   String _pass;
   bool _showPassword ;
@@ -400,8 +410,8 @@ class _MailPassFormState extends State<MailPassForm> {
   @override
   void initState() {
     super.initState();
-    _mail = "";
-    _pass = "";
+    _mail = '';
+    _pass = '';
     _showPassword = false;
   }
 
@@ -423,17 +433,17 @@ class _MailPassFormState extends State<MailPassForm> {
       child: Column(
         children: <Widget>[
           Container(
-            margin: EdgeInsets.only(left: 12, top: 12),
+            margin: const EdgeInsets.only(left: 12, top: 12),
             child: Align(
               alignment: Alignment.centerLeft,
               child: IconButton(
-                icon: Icon(
+                icon: const Icon(
                   FontAwesomeIcons.chevronLeft,
                   color: AppColor.primaryColor,
                 ),
                 onPressed: () {
                   widget._controller.previousPage(
-                    duration: Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 300),
                     curve: Curves.linear,
                   );
                   FocusScope.of(context).unfocus();
@@ -453,29 +463,27 @@ class _MailPassFormState extends State<MailPassForm> {
                       autovalidate: true,
                       decoration: const InputDecoration(
                         icon: Icon(FontAwesomeIcons.envelope),
-                        labelText: "メールアドレス",
-                        hintText: "sample@example.com",
+                        labelText: 'メールアドレス',
+                        hintText: 'sample@example.com',
                         border: OutlineInputBorder(),
                       ),
-                      validator: (String value) {
-                        return (!EmailValidator.validate(value)
-                            ? "正しいメールアドレスを入力してください。"
-                            : null);
-                      },
+                      validator: (String value) => !EmailValidator.validate(value)
+                            ? '正しいメールアドレスを入力してください。'
+                            : null,
                       onChanged: _handleEmail,
                     ),
                     TextFormField(
                       autovalidate: true,
                       obscureText: !_showPassword,
                       decoration: InputDecoration(
-                        icon: Icon(FontAwesomeIcons.lock),
-                        labelText: "パスワード",
-                        hintText: "",
-                        border: OutlineInputBorder(),
+                        icon: const Icon(FontAwesomeIcons.lock),
+                        labelText: 'パスワード',
+                        hintText: '',
+                        border: const OutlineInputBorder(),
                         suffixIcon: IconButton(
                           icon: _showPassword
-                              ? Icon(FontAwesomeIcons.eye, color: Colors.green,)
-                              : Icon(FontAwesomeIcons.eyeSlash, color: Colors.red,),
+                              ? const Icon(FontAwesomeIcons.eye, color: Colors.green,)
+                              : const Icon(FontAwesomeIcons.eyeSlash, color: Colors.red,),
                           onPressed: () {
                             setState(() {
                               _showPassword = !_showPassword;
@@ -483,16 +491,15 @@ class _MailPassFormState extends State<MailPassForm> {
                           },
                         ),
                       ),
-                      validator: (String value) {
-                        return (value.length < 6
-                            ? "6文字以上に設定してください。"
-                            : null);
-                      },
+                      validator: (String value) => value.length < 6
+                            ? '6文字以上に設定してください。'
+                            : null
+                      ,
                       onChanged: _handlePass,
                     ),
                     RoundedLoadingButton(
                       controller: _loginButtonController,
-                      child: Text("ログイン"),
+                      child: const Text('ログイン'),
                       onPressed: _loginWithEmail,
                       color: AppColor.signinButtonColor,
                     ),
@@ -506,22 +513,13 @@ class _MailPassFormState extends State<MailPassForm> {
     );
   }
 
-  void _loginWithEmail() async {
+  Future<void> _loginWithEmail() async {
     if (_formKey.currentState.validate()) {
-      Map result = await authService.signUpWithEmail(_mail, _pass);
+      final bool result = await authService.signUpWithEmail(_mail, _pass, context);
       _loginButtonController.reset();
-      if (result["isError"] == false) {
-        print("ログイン成功");
-        thenLogin(context, LoginLogic.Email, result["resultUser"].user.uid);
-      } else {
-        switch (result["errorMsg"]) {
-          case "ERROR_WRONG_PASSWORD":
-            showLoginFailedDialog("パスワードが間違っています。");
-            break;
-          default:
-            showLoginFailedDialog("何らかの問題でログインに失敗しました。");
-            break;
-        }
+      if (result) {
+        print('ログイン成功');
+        thenLogin(context, LoginLogic.Email);
       }
     }
   }
@@ -541,8 +539,8 @@ class _MailPassFormState extends State<MailPassForm> {
 }
 
 // ログイン後、ホーム画面に遷移
-void thenLogin(BuildContext context, LoginLogic loginLogic, String uid) async {
-  Navigator.pushReplacementNamed(context, "/home");
+Future<void> thenLogin(BuildContext context, LoginLogic loginLogic) async {
+  Navigator.pushReplacementNamed(context, '/home');
 }
 
 void showLoginSuccessfulDialog(BuildContext context, bool userRegisteredFlg) {
@@ -552,7 +550,7 @@ void showLoginSuccessfulDialog(BuildContext context, bool userRegisteredFlg) {
     dialogType: DialogType.SUCCES,
     animType: AnimType.SCALE,
     title: 'ログインしました！',
-    desc: userRegisteredFlg ? "作成済みのユーザーが見つかりました。" : "まずはユーザー情報を入力しましょう！",
+    desc: userRegisteredFlg ? '作成済みのユーザーが見つかりました。' : 'まずはユーザー情報を入力しましょう！',
     btnOkOnPress: () {},
   ).show();
 }

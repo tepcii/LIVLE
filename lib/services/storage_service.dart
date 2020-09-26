@@ -12,13 +12,13 @@ class StorageService {
 
   // カレントユーザーのアイコンを変更する
   static Future<StorageTaskSnapshot> updateUserIcon(BuildContext context, String _iconImagePath) async {
-    String _fileExt = basename(_iconImagePath).split(".").last;
-    AuthService _auth = AuthService();
-    User user = _auth.fetchCurrentUser();
-    String uid = user.uid;
-    File _imageFile = File(_iconImagePath);
-    FirebaseStorage _storage = Provider.of<FirebaseStorage>(context, listen: false);
-    StorageReference ref = _storage.ref().child("user_icons/${uid + "." + _fileExt}");
+    final String _fileExt = basename(_iconImagePath).split(".").last;
+    final AuthService _auth = AuthService();
+    final User user = _auth.fetchCurrentUser();
+    final String uid = user.uid;
+    final File _imageFile = File(_iconImagePath);
+    final FirebaseStorage _storage = Provider.of<FirebaseStorage>(context, listen: false);
+    final StorageReference ref = _storage.ref().child("user_icons/${uid + "." + _fileExt}");
     final StorageUploadTask uploadTask = ref.putFile(_imageFile);
     return await uploadTask.onComplete;
   }

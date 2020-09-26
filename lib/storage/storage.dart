@@ -1,24 +1,29 @@
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:livle/config/config.dart';
+import 'package:livle/config/secret.dart';
 
-Future<FirebaseApp> myFirebaseApp() {
-  return Firebase.initializeApp(
-    name: "LIVLE",
-    options: FirebaseOptions(
-      appId: Platform.isIOS ? "1:43252205480:ios:12f2f9b0ce763454a17f9d" : "1:43252205480:android:8380f70f051b41f7a17f9d",
-      messagingSenderId: "43252205480",
-      apiKey: "AIzaSyDdI_bXV5mZY00BD7i5OE-uImnRkd0LEVk",
-      projectId: "livle-dev-f20c6",
-    ),
-  );
+Future<FirebaseApp> myFirebaseApp() async {
+  if (Firebase.apps.length > 0) {
+    return Firebase.app(AppConfig.APP_NAME);
+  } else {
+    return Firebase.initializeApp(
+      name: AppConfig.APP_NAME,
+      options: FirebaseOptions(
+        appId: Platform.isIOS ? IOS_APP_ID : ANDROID_APP_ID,
+        messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
+        apiKey: FIREBASE_API_KEY,
+        projectId: FIREBASE_PROJECT_ID,
+      ),
+    );
+  }
 }
 
-Future<FirebaseStorage> myFirebaseStorage() async {
-  final FirebaseApp app = await myFirebaseApp();
+Future<FirebaseStorage> myFirebaseStorage(FirebaseApp app) async {
   return FirebaseStorage(
     app: app,
-    storageBucket: 'gs://livle-dev-f20c6.appspot.com/',
+    storageBucket: FIREBASE_STORAGE_BUCKET,
   );
 }
 

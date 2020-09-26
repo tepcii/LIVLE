@@ -5,10 +5,10 @@ import 'package:livle/services/input_validator.dart';
 
 class IconSelector extends StatefulWidget {
 
+  const IconSelector(this._iconImagePath, this._onTapEvent);
+
   final String _iconImagePath;
   final Function _onTapEvent;
-
-  IconSelector(this._iconImagePath, this._onTapEvent);
 
   @override
   _IconSelectorState createState() => _IconSelectorState();
@@ -35,9 +35,9 @@ class _IconSelectorState extends State<IconSelector> {
             bottom: 0,
             right: 0,
             child: GestureDetector(
-              onTap: widget._onTapEvent,
+              onTap: () => widget._onTapEvent,
               child: Container(
-                padding: EdgeInsets.all(3.0),
+                padding: const EdgeInsets.all(3.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(99.0),
                   color: AppColor.primaryColor,
@@ -47,7 +47,7 @@ class _IconSelectorState extends State<IconSelector> {
                     borderRadius: BorderRadius.circular(99.0),
                     color: Colors.blue,
                   ),
-                  child: Padding(
+                  child: const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Icon(
                       FontAwesomeIcons.pen,
@@ -67,8 +67,10 @@ class _IconSelectorState extends State<IconSelector> {
 
 
 class UserIdInput extends StatefulWidget {
-  final onChanged;
-  UserIdInput({Key key, this.onChanged}) : super(key: key);
+
+  const UserIdInput({Key key, this.onChanged}) : super(key: key);
+
+  final Function onChanged;
 
   @override
   _UserIdInputState createState() => _UserIdInputState();
@@ -80,8 +82,8 @@ class _UserIdInputState extends State<UserIdInput> {
 
   @override
   void initState() {
-    _textLength = "0";
-    _maxLength = "20";
+    _textLength = '0';
+    _maxLength = '20';
     super.initState();
   }
 
@@ -94,52 +96,45 @@ class _UserIdInputState extends State<UserIdInput> {
         decoration: InputDecoration(
           filled: true,
           fillColor: Colors.white,
-          prefixIcon: Icon(
+          prefixIcon: const Icon(
             FontAwesomeIcons.userTag,
             color: AppColor.primaryColor,
           ),
-          suffixText: "$_textLength/$_maxLength",
-          labelText: "",
-          labelStyle: TextStyle(
+          suffixText: '$_textLength/$_maxLength',
+          labelText: '',
+          labelStyle: const TextStyle(
             color: Colors.black,
           ),
-          hintText: "ユーザーID",
-          hintStyle: TextStyle(
+          hintText: 'ユーザーID',
+          hintStyle: const TextStyle(
             color: Colors.black,
           ),
-          enabledBorder: OutlineInputBorder(
+          enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(
               color: Colors.black,
               width: 1,
             ),
           ),
-          focusedBorder: OutlineInputBorder(
+          focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(
               color: Colors.cyan,
               width: 2,
             ),
           ),
-          errorBorder: OutlineInputBorder(
+          errorBorder: const OutlineInputBorder(
             borderSide: BorderSide(
               color: Colors.red,
               width: 2,
             ),
           ),
-          focusedErrorBorder: OutlineInputBorder(
+          focusedErrorBorder: const OutlineInputBorder(
             borderSide: BorderSide(
               color: Colors.red,
               width: 2,
             ),
           ),
         ),
-        validator: (String value) {
-          Map result = InputValidator.userId(value);
-          if (result["result"] == false) {
-            return result["msg"];
-          } else {
-            return null;
-          }
-        },
+        validator: (String value) => userIdValidator(value),
         onChanged: (String value) {
           setState(() {
             _textLength = value.length.toString();
@@ -151,8 +146,10 @@ class _UserIdInputState extends State<UserIdInput> {
 }
 
 class UserNameInput extends StatefulWidget {
-  final onChanged;
-  UserNameInput({Key key, this.onChanged}) : super(key: key);
+
+  const UserNameInput({Key key, this.onChanged}) : super(key: key);
+
+  final Function onChanged;
 
   @override
   _UserNameInputState createState() => _UserNameInputState();
@@ -164,8 +161,8 @@ class _UserNameInputState extends State<UserNameInput> {
 
   @override
   void initState() {
-    _textLength = "0";
-    _maxLength = "20";
+    _textLength = '0';
+    _maxLength = '20';
     super.initState();
   }
 
@@ -178,52 +175,45 @@ class _UserNameInputState extends State<UserNameInput> {
       decoration: InputDecoration(
         filled: true,
         fillColor: Colors.white,
-        prefixIcon: Icon(
+        prefixIcon: const Icon(
           FontAwesomeIcons.user,
           color: AppColor.primaryColor,
         ),
-        suffixText: "$_textLength/$_maxLength",
-        labelText: "",
-        labelStyle: TextStyle(
+        suffixText: '$_textLength/$_maxLength',
+        labelText: '',
+        labelStyle: const TextStyle(
           color: Colors.black,
         ),
-        hintText: "ユーザー名",
-        hintStyle: TextStyle(
+        hintText: 'ユーザー名',
+        hintStyle: const TextStyle(
           color: Colors.black,
         ),
-        enabledBorder: OutlineInputBorder(
+        enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(
             color: Colors.black,
             width: 1,
           ),
         ),
-        focusedBorder: OutlineInputBorder(
+        focusedBorder: const OutlineInputBorder(
           borderSide: BorderSide(
             color: Colors.cyan,
             width: 2,
           ),
         ),
-        errorBorder: OutlineInputBorder(
+        errorBorder: const OutlineInputBorder(
           borderSide: BorderSide(
             color: Colors.red,
             width: 2,
           ),
         ),
-        focusedErrorBorder: OutlineInputBorder(
+        focusedErrorBorder: const OutlineInputBorder(
           borderSide: BorderSide(
             color: Colors.red,
             width: 2,
           ),
         ),
       ),
-      validator: (String value) {
-        Map result = InputValidator.userName(value);
-        if (result["result"] == false) {
-          return result["msg"];
-        } else {
-          return null;
-        }
-      },
+      validator: (String value) => userNameValidator(value),
       onChanged: (String value) {
         setState(() {
           _textLength = value.length.toString();
@@ -235,8 +225,10 @@ class _UserNameInputState extends State<UserNameInput> {
 }
 
 class UserDescTextField extends StatefulWidget {
-  final onChanged;
-  UserDescTextField({Key key, this.onChanged}) : super(key: key);
+
+  const UserDescTextField({Key key, this.onChanged}) : super(key: key);
+
+  final Function onChanged;
 
   @override
   _UserDescTextFieldState createState() => _UserDescTextFieldState();
@@ -248,8 +240,8 @@ class _UserDescTextFieldState extends State<UserDescTextField> {
 
   @override
   void initState() {
-    _textLength = "0";
-    _maxLength = "100";
+    _textLength = '0';
+    _maxLength = '100';
     super.initState();
   }
 
@@ -264,52 +256,45 @@ class _UserDescTextFieldState extends State<UserDescTextField> {
       decoration: InputDecoration(
         filled: true,
         fillColor: Colors.white,
-        prefixIcon: Icon(
+        prefixIcon: const Icon(
           FontAwesomeIcons.idCard,
           color: AppColor.primaryColor,
         ),
-        suffixText: "$_textLength/$_maxLength",
-        labelText: "",
-        labelStyle: TextStyle(
+        suffixText: '$_textLength/$_maxLength',
+        labelText: '',
+        labelStyle: const TextStyle(
           color: Colors.black,
         ),
-        hintText: "説明",
-        hintStyle: TextStyle(
+        hintText: '説明',
+        hintStyle: const TextStyle(
           color: Colors.black,
         ),
-        enabledBorder: OutlineInputBorder(
+        enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(
             color: Colors.black,
             width: 1,
           ),
         ),
-        focusedBorder: OutlineInputBorder(
+        focusedBorder: const OutlineInputBorder(
           borderSide: BorderSide(
             color: Colors.cyan,
             width: 2,
           ),
         ),
-        errorBorder: OutlineInputBorder(
+        errorBorder: const OutlineInputBorder(
           borderSide: BorderSide(
             color: Colors.red,
             width: 2,
           ),
         ),
-        focusedErrorBorder: OutlineInputBorder(
+        focusedErrorBorder: const OutlineInputBorder(
           borderSide: BorderSide(
             color: Colors.red,
             width: 2,
           ),
         ),
       ),
-      validator: (String value) {
-        Map result = InputValidator.userDesc(value);
-        if (result["result"] == false) {
-          return result["msg"];
-        } else {
-          return null;
-        }
-      },
+      validator: (String value) => userDescValidator(value),
       onChanged: (String value) {
         setState(() {
           _textLength = value.length.toString();
