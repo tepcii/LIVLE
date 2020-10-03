@@ -460,7 +460,7 @@ class _MailPassFormState extends State<MailPassForm> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     TextFormField(
-                      autovalidate: true,
+                      autovalidateMode: AutovalidateMode.always,
                       decoration: const InputDecoration(
                         icon: Icon(FontAwesomeIcons.envelope),
                         labelText: 'メールアドレス',
@@ -473,7 +473,7 @@ class _MailPassFormState extends State<MailPassForm> {
                       onChanged: _handleEmail,
                     ),
                     TextFormField(
-                      autovalidate: true,
+                      autovalidateMode: AutovalidateMode.always,
                       obscureText: !_showPassword,
                       decoration: InputDecoration(
                         icon: const Icon(FontAwesomeIcons.lock),

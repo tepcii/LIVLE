@@ -2,17 +2,15 @@ import 'dart:io';
 
 import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:livle/config/config.dart';
-import 'package:livle/storage/storage.dart';
 import 'package:livle/view/tutorial_slider_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:livle/config/secret.dart';
 
-import 'view/home.dart';
 import 'view/auth_widget.dart';
+import 'view/home.dart';
 import 'view/login_select.dart';
 
 Future<void> main() async {
@@ -29,7 +27,7 @@ Future<void> main() async {
   final bool _appleSignInIsAvailable = await AppleSignIn.isAvailable();
 
 //  debugPaintSizeEnabled = true;
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+  SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.portraitUp])
       .then((_) {
     runApp(ProviderScope(
         child: MaterialApp(

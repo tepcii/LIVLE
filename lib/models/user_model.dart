@@ -1,6 +1,5 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:livle/services/storage_service.dart';
 import 'package:state_notifier/state_notifier.dart';
 
@@ -34,7 +33,7 @@ class UserStateNotifier extends StateNotifier<UserState> {
     state.iconImagePath = imagePath;
   }
 
-  void registerUserInfoToFireStore(BuildContext context, String _iconImagePath) async {
+  Future<void> registerUserInfoToFireStore(BuildContext context, String _iconImagePath) async {
     StorageTaskSnapshot snapshot = await StorageService.updateUserIcon(context, _iconImagePath);
   }
 

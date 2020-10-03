@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:livle/repositories/user.dart';
 
-final ChangeNotifierProvider<UserRegisterViewModel> userRegisterViewModelNotifierProvider = ChangeNotifierProvider<UserRegisterViewModel>((ProviderReference ref) => UserRegisterViewModel(userRepository: OriginUser()));
+final ChangeNotifierProvider<UserRegisterViewModel> userRegisterViewModelNotifierProvider = ChangeNotifierProvider<UserRegisterViewModel>((ProviderReference ref) => UserRegisterViewModel(userRepository: ref.read(originUserProvider)));
 
 class UserRegisterViewModel extends ChangeNotifier {
   UserRegisterViewModel({@required OriginUser userRepository}) : _originUser = userRepository;

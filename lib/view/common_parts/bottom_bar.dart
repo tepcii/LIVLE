@@ -8,7 +8,7 @@ class BottomBar extends StatefulWidget {
 
 class BottomBarState extends State<BottomBar> {
   // int _page;
-  GlobalKey _bottomNavigationKey = GlobalKey();
+  final GlobalKey _bottomNavigationKey = GlobalKey();
   @override
   void initState() {
     super.initState();
@@ -27,7 +27,7 @@ class BottomBarState extends State<BottomBar> {
       key: _bottomNavigationKey,
       index: 0,
       height: 50.0,
-      items: <Widget>[
+      items: const <Widget>[
         Icon(Icons.add, size: 30),
         Icon(Icons.list, size: 30),
         Icon(Icons.compare_arrows, size: 30),
@@ -38,7 +38,7 @@ class BottomBarState extends State<BottomBar> {
       buttonBackgroundColor: Colors.white,
       backgroundColor: Colors.orangeAccent,
       animationCurve: Curves.easeInOut,
-      animationDuration: Duration(milliseconds: 600),
+      animationDuration: const Duration(milliseconds: 600),
       // onTap: changePage,
     );
   }

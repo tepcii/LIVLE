@@ -28,7 +28,7 @@ class PieChartState extends State {
                 child: PieChart(
                   PieChartData(
                       pieTouchData:
-                          PieTouchData(touchCallback: (pieTouchResponse) {
+                          PieTouchData(touchCallback: (PieTouchResponse pieTouchResponse) {
                         setState(() {
                           if (pieTouchResponse.touchInput is FlLongPressEnd ||
                               pieTouchResponse.touchInput is FlPanEnd) {
@@ -54,7 +54,7 @@ class PieChartState extends State {
               children: const <Widget>[
                 Indicator(
                   color: Color(0xff0293ee),
-                  text: "アーティスト1",
+                  text: 'アーティスト1',
                   isSquare: true,
                 ),
                 SizedBox(
@@ -96,8 +96,8 @@ class PieChartState extends State {
   }
 
   List<PieChartSectionData> showingSections() {
-    return List.generate(4, (i) {
-      final isTouched = i == touchedIndex;
+    return List<PieChartSectionData>.generate(4, (int i) {
+      final bool isTouched = i == touchedIndex;
       final double fontSize = isTouched ? 25 : 16;
       final double radius = isTouched ? 60 : 50;
       switch (i) {

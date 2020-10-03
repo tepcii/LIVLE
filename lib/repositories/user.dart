@@ -7,10 +7,18 @@ part 'user.freezed.dart';
 @freezed
 abstract class OriginUser with _$OriginUser {
   const factory OriginUser({
-    @Default('') String id,
-    @Default('') String name,
+    @required String id,
+    @required String name,
     @Default('') String description,
     @Default('images/default_user_icon.png') String iconImagePath,
     @Default(false) bool pickedImage,
   }) = _OriginUser;
 }
+
+final Provider<OriginUser> originUserProvider = Provider<OriginUser>((ProviderReference ref) => const OriginUser(
+  id: '',
+  name: '',
+  description: '',
+  iconImagePath: 'images/default_user_icon.png',
+  pickedImage: false,
+));

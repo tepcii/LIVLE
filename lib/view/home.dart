@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:livle/config/config.dart';
 import 'package:livle/view/common_parts/loading_indicator.dart';
 import 'package:livle/view/management_view.dart';
 
-import 'common_parts/bottom_bar.dart';
 import '../services/auth_service.dart';
+import 'common_parts/bottom_bar.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -23,12 +22,12 @@ class _HomeState extends State<Home> {
     // ユーザーが登録済みかどうかをしらべる
     authService.fetchUserInfo().then((List userInfo) {
       // 登録済みの場合
-      if (userInfo.length > 0) {
-        // TODO: グラフにデータを反映
+      if (userInfo.isNotEmpty) {
+        // TODO(tenma): グラフにデータを反映
         _isRegisteredUser = false;
       } else {
         // 未登録の場合、ユーザー登録画面に遷移
-        Navigator.pushReplacementNamed(context, "/tutorial");
+        Navigator.pushReplacementNamed(context, '/tutorial');
       }
     });
   }
@@ -37,12 +36,12 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
+        leading: const IconButton(
           icon: Icon(Icons.menu),
           tooltip: 'Navigation menu',
           onPressed: null,
         ),
-        actions: <Widget>[
+        actions: const <Widget>[
           IconButton(
             icon: Icon(Icons.search),
             tooltip: 'Search',
@@ -53,7 +52,7 @@ class _HomeState extends State<Home> {
       ),
       body: _isRegisteredUser ? Center(
         child: PieChartPage(),
-      ) : LoadingIndicator(),
+      ) : const LoadingIndicator(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       bottomNavigationBar: BottomBar(),
     );

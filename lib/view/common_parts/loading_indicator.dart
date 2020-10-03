@@ -6,8 +6,8 @@ class LoadingIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Center(
-        child: Text("ロード中..."),
+      child: const  Center(
+        child: Text('ロード中...'),
       ),
     );
   }

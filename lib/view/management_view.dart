@@ -40,12 +40,12 @@ class _UserNameState extends State<UserName> {
     _fetchUserNameFromFireBase();
   }
 
-  void _fetchUserNameFromFireBase() async {
+  Future<void> _fetchUserNameFromFireBase() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final User currentUser = _auth.currentUser;
-    String uid = "";
+    String uid = '';
     if (currentUser == null)
-      uid = "ユーザーなし";
+      uid = 'ユーザーなし';
     else
       uid = currentUser.uid;
 //    Provider.of<UserController>(context, listen: false).login(uid);
@@ -53,6 +53,6 @@ class _UserNameState extends State<UserName> {
 
   @override
   Widget build(BuildContext context) {
-    return Text("TEST");
+    return const Text('TEST');
   }
 }

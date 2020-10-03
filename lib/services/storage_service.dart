@@ -12,7 +12,7 @@ class StorageService {
 
   // カレントユーザーのアイコンを変更する
   static Future<StorageTaskSnapshot> updateUserIcon(BuildContext context, String _iconImagePath) async {
-    final String _fileExt = basename(_iconImagePath).split(".").last;
+    final String _fileExt = basename(_iconImagePath).split('.').last;
     final AuthService _auth = AuthService();
     final User user = _auth.fetchCurrentUser();
     final String uid = user.uid;

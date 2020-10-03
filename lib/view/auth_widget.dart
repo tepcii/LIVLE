@@ -21,7 +21,9 @@ class AuthWidget extends ConsumerWidget {
       body: authStateChanges.when(
           data: (User user) => _data(context, user),
           loading: () => const LoadingIndicator(),
-          error: (k, e) => const LoadingIndicator(),
+          error: (_, __) => const Center(
+            child: Text('エラー'),
+          ),
       ),
     );
   }
