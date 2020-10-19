@@ -15,7 +15,6 @@ class AuthWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    logout();
     final authStateChanges = watch(authStateChangesProvider);
     return Scaffold(
       body: authStateChanges.when(

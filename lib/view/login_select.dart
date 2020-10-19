@@ -218,7 +218,7 @@ class _SignInButtonsState extends State<SignInButtons>
               ),
             ),
             color: AppColor.signinButtonColor,
-            onPressed: _onPressedTwitter,
+            onPressed: () => _onPressedTwitter(context),
           ),
           RoundedLoadingButton(
             controller: _googleBtnController,
@@ -245,7 +245,7 @@ class _SignInButtonsState extends State<SignInButtons>
               ),
             ),
             color: AppColor.signinButtonColor,
-            onPressed: _onPressedGoogle,
+            onPressed: () => _onPressedGoogle(context),
           ),
           RaisedButton(
             child: Container(
@@ -310,7 +310,7 @@ class _SignInButtonsState extends State<SignInButtons>
               ),
             ),
             color: AppColor.signinButtonColor,
-            onPressed: _onPressedApple,
+            onPressed: () => _onPressedApple(context),
           ),
           const Text(
             'ログイン方法を選んでください。',
@@ -321,7 +321,7 @@ class _SignInButtonsState extends State<SignInButtons>
   }
 
   // Twitterボタンを押したときの処理
-  Future<void> _onPressedTwitter() async {
+  Future<void> _onPressedTwitter(BuildContext context) async {
     if (send) {
       return;
     }
@@ -329,18 +329,18 @@ class _SignInButtonsState extends State<SignInButtons>
     final User user = await authService.signInWithTwitter();
     if (user != null) {
       print('ログイン成功:' + user.uid);
-      _twitterBtnController.success();
-      thenLogin(context, LoginLogic.Twitter);
+      // await _twitterBtnController.success();
+      // thenLogin(context, LoginLogic.Twitter);
     } else {
       print('ログイン失敗');
       showLoginFailedDialog('ネットワーク接続状況を確認してください。');
       _twitterBtnController.reset();
     }
-    finishSend();
+    // finishSend();
   }
 
   // Googleボタンを押したときの処理
-  Future<void> _onPressedGoogle() async {
+  Future<void> _onPressedGoogle(BuildContext context) async {
     if (send) {
       return;
     }
@@ -348,8 +348,8 @@ class _SignInButtonsState extends State<SignInButtons>
     final User user = await authService.signInWithGoogle();
     if (user != null) {
       print('ログイン成功:' + user.uid);
-      thenLogin(context, LoginLogic.Google);
-      _googleBtnController.success();
+      // thenLogin(context, LoginLogic.Google);
+      await _googleBtnController.success();
     } else {
       print('ログイン失敗');
       showLoginFailedDialog('ネットワーク接続状況を確認してください。');
@@ -359,7 +359,7 @@ class _SignInButtonsState extends State<SignInButtons>
   }
 
   // Appleボタンを押したときの処理
-  Future<void> _onPressedApple() async {
+  Future<void> _onPressedApple(BuildContext context) async {
     if (send) {
       return;
     }
@@ -367,8 +367,8 @@ class _SignInButtonsState extends State<SignInButtons>
     final User user = await authService.signInWithApple();
     if (user != null) {
       print('ログイン成功:' + user.uid);
-      thenLogin(context, LoginLogic.Apple);
-      _appleBtnController.success();
+      // thenLogin(context, LoginLogic.Apple);
+      await _appleBtnController.success();
     } else {
       print('ログイン失敗');
       showLoginFailedDialog('ネットワーク接続状況を確認してください。');
@@ -519,7 +519,7 @@ class _MailPassFormState extends State<MailPassForm> {
       _loginButtonController.reset();
       if (result) {
         print('ログイン成功');
-        thenLogin(context, LoginLogic.Email);
+        // thenLogin(context, LoginLogic.Email);
       }
     }
   }

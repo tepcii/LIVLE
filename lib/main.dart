@@ -37,7 +37,7 @@ Future<void> main() async {
             hintColor: Colors.white,
           ),
           home: AuthWidget(
-            signedInBuilder: (BuildContext context) => Home(),
+            signedInBuilder: (BuildContext context) => UserCheckerWidget(),
             nonSignedInBuilder: (BuildContext context) => LoginSelect(_appleSignInIsAvailable),
           ),
           routes: <String, WidgetBuilder>{
