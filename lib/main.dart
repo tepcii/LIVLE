@@ -27,9 +27,10 @@ Future<void> main() async {
   final bool _appleSignInIsAvailable = await AppleSignIn.isAvailable();
 
 //  debugPaintSizeEnabled = true;
-  SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.portraitUp])
-      .then((_) {
-    runApp(ProviderScope(
+  SystemChrome.setPreferredOrientations(
+      <DeviceOrientation>[DeviceOrientation.portraitUp]).then((_) {
+    runApp(
+      ProviderScope(
         child: MaterialApp(
           title: 'LIVLE',
           theme: ThemeData(
@@ -38,11 +39,13 @@ Future<void> main() async {
           ),
           home: AuthWidget(
             signedInBuilder: (BuildContext context) => UserCheckerWidget(),
-            nonSignedInBuilder: (BuildContext context) => LoginSelect(_appleSignInIsAvailable),
+            nonSignedInBuilder: (BuildContext context) =>
+                LoginSelect(_appleSignInIsAvailable),
           ),
           routes: <String, WidgetBuilder>{
-            '/home': (BuildContext context) => Home(),
-            '/loginSelect': (BuildContext context) => LoginSelect(_appleSignInIsAvailable),
+            '/home': (BuildContext context) => const Home(),
+            '/loginSelect': (BuildContext context) =>
+                LoginSelect(_appleSignInIsAvailable),
             '/tutorial': (BuildContext context) => const TutorialSliderView(),
           },
         ),

@@ -5,7 +5,7 @@ import 'package:livle/config/config.dart';
 import 'package:livle/config/secret.dart';
 
 Future<FirebaseApp> myFirebaseApp() async {
-  if (Firebase.apps.length > 0) {
+  if (Firebase.apps.isNotEmpty) {
     return Firebase.app(AppConfig.APP_NAME);
   } else {
     return Firebase.initializeApp(
@@ -26,4 +26,3 @@ Future<FirebaseStorage> myFirebaseStorage(FirebaseApp app) async {
     storageBucket: FIREBASE_STORAGE_BUCKET,
   );
 }
-

@@ -43,11 +43,12 @@ class _UserNameState extends State<UserName> {
   Future<void> _fetchUserNameFromFireBase() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final User currentUser = _auth.currentUser;
-    String uid = '';
+    String uid;
     if (currentUser == null)
-      uid = 'ユーザーなし';
+      uid = '';
     else
       uid = currentUser.uid;
+    return uid;
 //    Provider.of<UserController>(context, listen: false).login(uid);
   }
 

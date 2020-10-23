@@ -15,14 +15,14 @@ class AuthWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final authStateChanges = watch(authStateChangesProvider);
+    final AsyncValue<User> authStateChanges = watch(authStateChangesProvider);
     return Scaffold(
       body: authStateChanges.when(
-          data: (User user) => _data(context, user),
-          loading: () => const LoadingIndicator(),
-          error: (_, __) => const Center(
-            child: Text('エラー'),
-          ),
+        data: (User user) => _data(context, user),
+        loading: () => const LoadingIndicator(),
+        error: (_, __) => const Center(
+          child: Text('エラー'),
+        ),
       ),
     );
   }
@@ -33,9 +33,8 @@ class AuthWidget extends ConsumerWidget {
     }
     return nonSignedInBuilder(context);
   }
-  
+
   Future<void> logout() async {
     await FirebaseAuth.instance.signOut();
   }
-
 }

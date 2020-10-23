@@ -23,8 +23,6 @@ class TutorialSliderView extends StatefulWidget {
 }
 
 class _TutorialSliderViewState extends State<TutorialSliderView> {
-
-
   @override
   Widget build(BuildContext context) {
     return OverBoard(
@@ -53,7 +51,6 @@ class _TutorialSliderViewState extends State<TutorialSliderView> {
       },
     );
   }
-
 }
 
 class _WelcomePage extends StatelessWidget {
@@ -79,8 +76,7 @@ class _WelcomePage extends StatelessWidget {
               ),
             ),
           ),
-        ]
-    );
+        ]);
   }
 }
 
@@ -107,15 +103,16 @@ class _DescriptionPage extends StatelessWidget {
               ),
             ),
           ),
-        ]
-    );
+        ]);
   }
 }
 
 class _UserInfoInputPage extends ConsumerWidget {
   final ImagePicker picker = ImagePicker();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final RoundedLoadingButtonController _userRegisterBtnController = RoundedLoadingButtonController();
+  final RoundedLoadingButtonController _userRegisterBtnController =
+      RoundedLoadingButtonController();
+
   // bool connecting;
   // String _iconImagePath = 'images/default_user_icon.png';
   // String _userId = '';
@@ -134,7 +131,8 @@ class _UserInfoInputPage extends ConsumerWidget {
 
   // カメラロールから画像を選択後、正方形にトリミングして表示
   Future<String> pickImage(UserRegisterViewModel userState) async {
-    final PickedFile pickedFile = await picker.getImage(source: ImageSource.gallery);
+    final PickedFile pickedFile =
+        await picker.getImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       final File croppedImage = await ImageCropper.cropImage(
@@ -170,29 +168,29 @@ class _UserInfoInputPage extends ConsumerWidget {
     }
   }
 
-  void onChangeUserId(String value, ScopedReader watch) {
-    final UserRegisterViewModel _provider = watch(userRegisterViewModelNotifierProvider);
-    _provider.changeId(value);
+  void onChangeUserId(String value, UserRegisterViewModel userState) {
+    userState.changeId(value);
   }
 
-  void onChangedUserName(String value, ScopedReader watch) {
-    final UserRegisterViewModel _provider = watch(userRegisterViewModelNotifierProvider);
-    _provider.changeName(value);
+  void onChangedUserName(String value, UserRegisterViewModel userState) {
+    userState.changeName(value);
   }
 
-  void onChangedUserDesc(String value, ScopedReader watch) {
-    final UserRegisterViewModel _provider = watch(userRegisterViewModelNotifierProvider);
-    _provider.changeDescription(value);
+  void onChangedUserDesc(String value, UserRegisterViewModel userState) {
+    userState.changeDescription(value);
   }
 
   // 登録ボタン押下後の処理
-  Future<void> _onPressedRegisterBtn(BuildContext context, UserRegisterViewModel userState) async {
+  Future<void> _onPressedRegisterBtn(
+      BuildContext context, UserRegisterViewModel userState) async {
     // フォームバリデーション
     if (_formKey.currentState.validate()) {
       // ユーザー登録処理
       if (userState.originUser.pickedImage) {
         // 画像が選択されていればストレージに登録
-        final StorageTaskSnapshot snapshot = await StorageService.updateUserIcon(context, userState.originUser.iconImagePath);
+        final StorageTaskSnapshot snapshot =
+            await StorageService.updateUserIcon(
+                context, userState.originUser.iconImagePath);
         if (snapshot.error == null) {
           _userRegisterBtnController.success();
           print(await snapshot.ref.getDownloadURL());
@@ -201,7 +199,6 @@ class _UserInfoInputPage extends ConsumerWidget {
           print('Something goes wrong');
         }
       }
-
     } else {
       _userRegisterBtnController.error();
       AwesomeDialog(
@@ -220,7 +217,8 @@ class _UserInfoInputPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final UserRegisterViewModel userState = watch(userRegisterViewModelNotifierProvider);
+    final UserRegisterViewModel userState =
+        watch(userRegisterViewModelNotifierProvider);
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Form(
@@ -234,8 +232,11 @@ class _UserInfoInputPage extends ConsumerWidget {
               physics: const ClampingScrollPhysics(),
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(top: 20, bottom: MediaQuery.of(context).size.width) * 0.07,
-                  child: IconSelector(userState.originUser.iconImagePath, () async {
+                  padding: EdgeInsets.only(
+                          top: 20, bottom: MediaQuery.of(context).size.width) *
+                      0.07,
+                  child: IconSelector(userState.originUser.iconImagePath,
+                      () async {
                     await pickImage(userState);
                     // if (pickedImagePath != '') {
                     //   userState.iconImagePath = pickedImagePath;
@@ -249,12 +250,17 @@ class _UserInfoInputPage extends ConsumerWidget {
                   child: Card(
                     elevation: 10,
                     child: Padding(
-                      padding: const EdgeInsets.only(bottom: 17, left: 17, right: 17,),
+                      padding: const EdgeInsets.only(
+                        bottom: 17,
+                        left: 17,
+                        right: 17,
+                      ),
                       child: Column(
                         children: <Widget>[
                           Container(
                             child: UserIdInput(
-                              onChanged: (String value) => onChangeUserId(value, watch),
+                              onChanged: (String value) =>
+                                  onChangeUserId(value, userState),
                             ),
                             margin: const EdgeInsets.symmetric(
                               vertical: 20,
@@ -262,7 +268,8 @@ class _UserInfoInputPage extends ConsumerWidget {
                           ),
                           Container(
                             child: UserNameInput(
-                              onChanged: onChangedUserName,
+                              onChanged: (String value) =>
+                                  onChangedUserName(value, userState),
                             ),
                             margin: const EdgeInsets.only(
                               bottom: 20,
@@ -270,7 +277,8 @@ class _UserInfoInputPage extends ConsumerWidget {
                           ),
                           Container(
                             child: UserDescTextField(
-                              onChanged: onChangedUserDesc,
+                              onChanged: (String value) =>
+                                  onChangedUserDesc(value, userState),
                             ),
                             margin: const EdgeInsets.only(
                               bottom: 20,
