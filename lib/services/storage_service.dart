@@ -2,26 +2,19 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/all.dart';
-import 'package:livle/providers/firebase_providers.dart';
 import 'package:livle/services/auth_service.dart';
 import 'package:path/path.dart';
-import 'package:flutter/cupertino.dart';
 
 class StorageService {
   // カレントユーザーのアイコンを変更する
-  static Future<StorageTaskSnapshot> updateUserIcon(
-      BuildContext context, String _iconImagePath) async {
+  static UploadTask updateUserIcon(FirebaseStorage storage, String _iconImagePath) {
     final String _fileExt = basename(_iconImagePath).split('.').last;
     final AuthService _auth = AuthService();
     final User user = _auth.fetchCurrentUser();
     final String uid = user.uid;
     final File _imageFile = File(_iconImagePath);
-    final FirebaseStorage _storage = context.read(firebaseStorageProvider);
-    final StorageReference ref =
-        _storage.ref().child("user_icons/${uid + "." + _fileExt}");
-    final StorageUploadTask uploadTask = ref.putFile(_imageFile);
-    return await uploadTask.onComplete;
+    final Reference ref = storage.ref().child("user_icons/${uid + "." + _fileExt}");
+    final UploadTask uploadTask = ref.putFile(_imageFile);
+    return uploadTask;
   }
 }

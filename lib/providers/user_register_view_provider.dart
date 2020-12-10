@@ -2,7 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:livle/repositories/user.dart';
 
-final ChangeNotifierProvider<UserRegisterViewModel> userRegisterViewModelNotifierProvider = ChangeNotifierProvider<UserRegisterViewModel>((ProviderReference ref) => UserRegisterViewModel(userRepository: ref.read(originUserProvider)));
+final ChangeNotifierProvider<UserRegisterViewModel> userRegisterViewModelNotifierProvider = ChangeNotifierProvider<UserRegisterViewModel>(
+  (ProviderReference ref) => UserRegisterViewModel(
+    userRepository: ref.read(originUserProvider),
+  ),
+);
 
 class UserRegisterViewModel extends ChangeNotifier {
   UserRegisterViewModel({@required OriginUser userRepository}) : _originUser = userRepository;
@@ -10,6 +14,10 @@ class UserRegisterViewModel extends ChangeNotifier {
   OriginUser _originUser;
 
   OriginUser get originUser => _originUser;
+  set originUser(OriginUser user) {
+    _originUser = user;
+    notifyListeners();
+  }
 
   void changeId(String id) {
     _originUser = _originUser.copyWith(id: id);
@@ -35,5 +43,4 @@ class UserRegisterViewModel extends ChangeNotifier {
     _originUser = _originUser.copyWith(iconImagePath: 'images/default_user_icon.png', pickedImage: false);
     notifyListeners();
   }
-
 }

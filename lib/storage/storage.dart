@@ -21,8 +21,8 @@ Future<FirebaseApp> myFirebaseApp() async {
 }
 
 Future<FirebaseStorage> myFirebaseStorage(FirebaseApp app) async {
-  return FirebaseStorage(
+  return FirebaseStorage.instanceFor(
     app: app,
-    storageBucket: FIREBASE_STORAGE_BUCKET,
+    bucket: FIREBASE_STORAGE_BUCKET,
   );
 }
