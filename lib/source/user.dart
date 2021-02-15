@@ -36,7 +36,24 @@ class UserDataSource implements IUserDataSource {
       'isOfficial': false,
       'name': user.name,
       'description': user.description,
+      'pickedImage': user.pickedImage,
     });
+    // await FirebaseFirestore.instance.collection('money').doc(uid).set(<String, dynamic>{
+    //   'spendings': <Map<String, dynamic>>[
+    //     <String, dynamic>{
+    //       'amount': 5000,
+    //       'title': 'SHISHAMOライブ',
+    //       'date': Timestamp.fromDate(DateTime(2021, 2, 10)),
+    //       'memo': 'メモメモメモ',
+    //     },
+    //     <String, dynamic>{
+    //       'amount': 3000,
+    //       'title': 'SHISHAMOグッズ',
+    //       'date': Timestamp.fromDate(DateTime(2020, 1, 20)),
+    //       'memo': 'メモメモメモ２',
+    //     },
+    //   ],
+    // });
 
     return true;
   }

@@ -3,10 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-import 'package:livle/config/config.dart';
 import 'package:livle/config/secret.dart';
 
-final FirebaseApp firebaseApp = Firebase.app(AppConfig.APP_NAME);
+final FirebaseApp firebaseApp = Firebase.app();
 
 final Provider<FirebaseStorage> firebaseStorageProvider = Provider<FirebaseStorage>((ProviderReference ref) {
   final FirebaseApp app = firebaseApp;

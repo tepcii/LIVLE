@@ -8,6 +8,7 @@ import 'package:livle/config/config.dart';
 import 'package:livle/view/tutorial_slider_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:livle/config/secret.dart';
+import 'package:livle/view/user_checker.dart';
 
 import 'view/auth_widget.dart';
 import 'view/home.dart';
@@ -17,7 +18,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (Firebase.apps.isEmpty) {
     await Firebase.initializeApp(
-      name: AppConfig.APP_NAME,
+      // name: AppConfig.APP_NAME,
       options: FirebaseOptions(
         appId: Platform.isIOS ? IOS_APP_ID : ANDROID_APP_ID,
         messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
@@ -37,13 +38,14 @@ Future<void> main() async {
           theme: ThemeData(
             primaryColor: AppColor.primaryColor,
             hintColor: Colors.white,
+            scaffoldBackgroundColor: Colors.white,
           ),
           home: AuthWidget(
             signedInBuilder: (BuildContext context) => UserCheckerWidget(),
             nonSignedInBuilder: (BuildContext context) => LoginSelect(_appleSignInIsAvailable),
           ),
           routes: <String, WidgetBuilder>{
-            '/home': (BuildContext context) => const Home(),
+            '/home': (BuildContext context) => Home(),
             '/loginSelect': (BuildContext context) => LoginSelect(_appleSignInIsAvailable),
             '/tutorial': (BuildContext context) => const TutorialSliderView(),
           },

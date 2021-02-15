@@ -14,6 +14,18 @@ class UserRegisterViewModel extends ChangeNotifier {
   OriginUser _originUser;
 
   OriginUser get originUser => _originUser;
+
+  void setUserInfoToLocalState(Map<String, dynamic> doc) {
+    _originUser = _originUser.copyWith(
+      name: doc['name'] as String,
+      description: doc['description'] as String,
+      id: doc['display_id'] as String,
+      pickedImage: doc['pickedImage'] as bool,
+      isBanned: doc['isBanned'] as bool,
+      isOfficial: doc['isOfficial'] as bool,
+    );
+  }
+
   set originUser(OriginUser user) {
     _originUser = user;
     notifyListeners();

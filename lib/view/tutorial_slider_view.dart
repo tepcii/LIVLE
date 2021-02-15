@@ -190,6 +190,7 @@ class _UserInfoInputPage extends ConsumerWidget {
           await userState.originUser.source.registerUser(userState.originUser).then((bool value) {
             if (value) {
               _userRegisterBtnController.success();
+              Navigator.pushReplacementNamed(context, '/home');
             } else {
               _userRegisterBtnController.error();
             }

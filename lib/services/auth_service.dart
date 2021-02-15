@@ -206,7 +206,7 @@ class AuthService {
     await FirebaseFirestore.instance.collection('users').doc(currentUser.uid).get().then((DocumentSnapshot value) {
       if (value.exists) {
         userDoc = value.data();
-        setUserInfoToLocalState(userState, userDoc);
+        userState.setUserInfoToLocalState(userDoc);
         exists = true;
       } else {
         exists = false;
@@ -214,11 +214,5 @@ class AuthService {
     });
 
     return exists;
-  }
-
-  void setUserInfoToLocalState(UserRegisterViewModel userState, Map<String, dynamic> doc) {
-    userState.originUser = userState.originUser.copyWith(
-      name: '名前',
-    );
   }
 }
