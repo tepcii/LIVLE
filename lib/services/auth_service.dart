@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_twitter/flutter_twitter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:apple_sign_in/apple_sign_in.dart';
+import 'package:livle/providers/user_register_view_provider.dart';
 
 import '../config/secret.dart' as secret;
 
@@ -36,12 +36,12 @@ class AuthService {
         // ユーザー作成時にメールアドレス使用済みエラーが出る場合、そのままログイン
         case 'ERROR_EMAIL_ALREADY_IN_USE':
           final bool _signInResult = await signInWithEmail(email, password);
-          if (_signInResult){
+          if (_signInResult) {
             return true;
           }
           break;
 
-          // パスワードが違うエラー
+        // パスワードが違うエラー
         case 'ERROR_WRONG_PASSWORD':
           AwesomeDialog(
             context: context,
@@ -65,13 +65,11 @@ class AuthService {
             btnOkOnPress: () {},
           ).show();
           break;
-
       }
       return false;
     }
 
     return true;
-
   }
 
   // メールアドレスとパスワードを使ったサインイン
@@ -87,8 +85,6 @@ class AuthService {
 
     return true;
   }
-
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Twitter APIを通じてログイン情報を取得
   Future<User> signInWithTwitter() async {
@@ -111,7 +107,7 @@ class AuthService {
     );
 
     final User user = await fetchCurrentUserWithCredential(credential);
-    final User currentUser = _auth.currentUser;
+    final User currentUser = _firebaseAuth.currentUser;
 
     assert(!user.isAnonymous);
     assert(await user.getIdToken() != null);
@@ -141,7 +137,6 @@ class AuthService {
     } else {
       return null;
     }
-
   }
 
   // Appleアカウントでログイン
@@ -170,45 +165,54 @@ class AuthService {
       default:
         return null;
     }
-
   }
 
   // Firebaseからカレントユーザーを取得
   Future<User> fetchCurrentUserWithCredential(AuthCredential credential) async {
-    return (await _auth.signInWithCredential(credential)).user;
+    return (await _firebaseAuth.signInWithCredential(credential)).user;
   }
 
   // Firebaseからカレントユーザーを取得
   User fetchCurrentUser() {
-    return FirebaseAuth.instance.currentUser;
+    return _firebaseAuth.currentUser;
   }
 
   // カレントユーザーのユーザー情報をCloud Firestoreから取得
-  Future<List<dynamic>> fetchUserInfo() async {
-    final User currentUser = FirebaseAuth.instance.currentUser;
-    final int _index = Platform.isIOS ? 0 : 1;
-    final String providerId = currentUser.providerData[_index].providerId;
-    List<dynamic> userDoc;
-    
-    if (providerId == 'password') {
-      await FirebaseFirestore.instance.collection('users').where('email_uid', isEqualTo: currentUser.uid).get().then((QuerySnapshot value) {
-        userDoc = value.docs;
-      });
-    } else if (providerId == 'twitter.com') {
-      await FirebaseFirestore.instance.collection('users').where('twitter_uid', isEqualTo: currentUser.uid).get().then((QuerySnapshot value) {
-        userDoc = value.docs;
-      });
-    } else if (providerId == 'google.com') {
-      await FirebaseFirestore.instance.collection('users').where('google_uid', isEqualTo: currentUser.uid).get().then((QuerySnapshot value) {
-        userDoc = value.docs;
-      });
-    } else if (providerId == 'apple.com') {
-      await FirebaseFirestore.instance.collection('users').where('apple_uid', isEqualTo: currentUser.uid).get().then((QuerySnapshot value) {
-        userDoc = value.docs;
-      });
-    }
+  Future<bool> fetchUserInfo(UserRegisterViewModel userState) async {
+    final User currentUser = _firebaseAuth.currentUser;
+    // final int _index = Platform.isIOS ? 0 : 1;
+    // final String providerId = currentUser.providerData[_index].providerId;
+    Map<String, dynamic> userDoc;
+    bool exists;
 
-    return userDoc;
+    // if (providerId == 'password') {
+    //   await FirebaseFirestore.instance.collection('users').where('email_uid', isEqualTo: currentUser.uid).get().then((QuerySnapshot value) {
+    //     userDoc = value.docs;
+    //   });
+    // } else if (providerId == 'twitter.com') {
+    //   await FirebaseFirestore.instance.collection('users').where('twitter_uid', isEqualTo: currentUser.uid).get().then((QuerySnapshot value) {
+    //     userDoc = value.docs;
+    //   });
+    // } else if (providerId == 'google.com') {
+    //   await FirebaseFirestore.instance.collection('users').where('google_uid', isEqualTo: currentUser.uid).get().then((QuerySnapshot value) {
+    //     userDoc = value.docs;
+    //   });
+    // } else if (providerId == 'apple.com') {
+    //   await FirebaseFirestore.instance.collection('users').where('apple_uid', isEqualTo: currentUser.uid).get().then((QuerySnapshot value) {
+    //     userDoc = value.docs;
+    //   });
+    // }
 
+    await FirebaseFirestore.instance.collection('users').doc(currentUser.uid).get().then((DocumentSnapshot value) {
+      if (value.exists) {
+        userDoc = value.data();
+        userState.setUserInfoToLocalState(userDoc);
+        exists = true;
+      } else {
+        exists = false;
+      }
+    });
+
+    return exists;
   }
 }

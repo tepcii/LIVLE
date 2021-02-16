@@ -2,38 +2,57 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:livle/repositories/user.dart';
 
-final ChangeNotifierProvider<UserRegisterViewModel> userRegisterViewModelNotifierProvider = ChangeNotifierProvider<UserRegisterViewModel>((ProviderReference ref) => UserRegisterViewModel(userRepository: ref.read(originUserProvider)));
+final ChangeNotifierProvider<UserRegisterViewModel> userRegisterViewModelNotifierProvider = ChangeNotifierProvider<UserRegisterViewModel>(
+  (ProviderReference ref) => UserRegisterViewModel(
+    userRepository: ref.read(originUserProvider),
+  ),
+);
 
 class UserRegisterViewModel extends ChangeNotifier {
-  UserRegisterViewModel({@required OriginUser userRepository}) : _originUser = userRepository;
+  UserRegisterViewModel({@required OriginUserRepository userRepository}) : _userRepository = userRepository;
 
-  OriginUser _originUser;
+  OriginUserRepository _userRepository;
 
-  OriginUser get originUser => _originUser;
+  OriginUserRepository get userRepository => _userRepository;
+
+  void setUserInfoToLocalState(Map<String, dynamic> doc) {
+    _userRepository.originUser = _userRepository.originUser.copyWith(
+      name: doc['name'] as String,
+      description: doc['description'] as String,
+      id: doc['display_id'] as String,
+      pickedImage: doc['pickedImage'] as bool,
+      isBanned: doc['isBanned'] as bool,
+      isOfficial: doc['isOfficial'] as bool,
+    );
+  }
+
+  set userRepository(OriginUserRepository user) {
+    _userRepository = user;
+    notifyListeners();
+  }
 
   void changeId(String id) {
-    _originUser = _originUser.copyWith(id: id);
+    _userRepository.originUser = _userRepository.originUser.copyWith(id: id);
     notifyListeners();
   }
 
   void changeName(String name) {
-    _originUser = _originUser.copyWith(name: name);
+    _userRepository.originUser = _userRepository.originUser.copyWith(name: name);
     notifyListeners();
   }
 
   void changeDescription(String description) {
-    _originUser = _originUser.copyWith(description: description);
+    _userRepository.originUser = _userRepository.originUser.copyWith(description: description);
     notifyListeners();
   }
 
   void changeIconImagePath(String iconImagePath) {
-    _originUser = _originUser.copyWith(iconImagePath: iconImagePath, pickedImage: true);
+    _userRepository.originUser = _userRepository.originUser.copyWith(iconImagePath: iconImagePath, pickedImage: true);
     notifyListeners();
   }
 
   void toDefaultImage() {
-    _originUser = _originUser.copyWith(iconImagePath: 'images/default_user_icon.png', pickedImage: false);
+    _userRepository.originUser = _userRepository.originUser.copyWith(iconImagePath: 'images/default_user_icon.png', pickedImage: false);
     notifyListeners();
   }
-
 }
