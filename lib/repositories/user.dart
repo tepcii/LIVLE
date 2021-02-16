@@ -7,10 +7,25 @@ import 'package:livle/source/user.dart';
 
 part 'user.freezed.dart';
 
+class OriginUserRepository extends ChangeNotifier {
+  OriginUserRepository({
+    @required this.source,
+    @required OriginUser originUser,
+  }) : _originUser = originUser;
+
+  IUserDataSource source;
+  OriginUser _originUser;
+
+  OriginUser get originUser => _originUser;
+  set originUser(OriginUser value) {
+    _originUser = value;
+    notifyListeners();
+  }
+}
+
 @freezed
 abstract class OriginUser with _$OriginUser {
   const factory OriginUser({
-    @required IUserDataSource source,
     @required String id,
     @required String name,
     @Default('') String description,
@@ -21,13 +36,12 @@ abstract class OriginUser with _$OriginUser {
   }) = _OriginUser;
 }
 
-final Provider<OriginUser> originUserProvider = Provider<OriginUser>(
-  (ProviderReference ref) => OriginUser(
+final Provider<OriginUserRepository> originUserProvider = Provider<OriginUserRepository>(
+  (ProviderReference ref) => OriginUserRepository(
     source: UserDataSource(storage: ref.read(firebaseStorageProvider)),
-    id: '',
-    name: '',
-    description: '',
-    iconImagePath: 'images/default_user_icon.png',
-    pickedImage: false,
+    originUser: OriginUser(
+      id: '',
+      name: '',
+    ),
   ),
 );

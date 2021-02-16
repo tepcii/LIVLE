@@ -15,8 +15,7 @@ class _$OriginUserTearOff {
 
 // ignore: unused_element
   _OriginUser call(
-      {@required IUserDataSource source,
-      @required String id,
+      {@required String id,
       @required String name,
       String description = '',
       String iconImagePath = 'images/default_user_icon.png',
@@ -24,7 +23,6 @@ class _$OriginUserTearOff {
       bool isBanned = false,
       bool isOfficial = false}) {
     return _OriginUser(
-      source: source,
       id: id,
       name: name,
       description: description,
@@ -42,7 +40,6 @@ const $OriginUser = _$OriginUserTearOff();
 
 /// @nodoc
 mixin _$OriginUser {
-  IUserDataSource get source;
   String get id;
   String get name;
   String get description;
@@ -60,8 +57,7 @@ abstract class $OriginUserCopyWith<$Res> {
           OriginUser value, $Res Function(OriginUser) then) =
       _$OriginUserCopyWithImpl<$Res>;
   $Res call(
-      {IUserDataSource source,
-      String id,
+      {String id,
       String name,
       String description,
       String iconImagePath,
@@ -80,7 +76,6 @@ class _$OriginUserCopyWithImpl<$Res> implements $OriginUserCopyWith<$Res> {
 
   @override
   $Res call({
-    Object source = freezed,
     Object id = freezed,
     Object name = freezed,
     Object description = freezed,
@@ -90,7 +85,6 @@ class _$OriginUserCopyWithImpl<$Res> implements $OriginUserCopyWith<$Res> {
     Object isOfficial = freezed,
   }) {
     return _then(_value.copyWith(
-      source: source == freezed ? _value.source : source as IUserDataSource,
       id: id == freezed ? _value.id : id as String,
       name: name == freezed ? _value.name : name as String,
       description:
@@ -114,8 +108,7 @@ abstract class _$OriginUserCopyWith<$Res> implements $OriginUserCopyWith<$Res> {
       __$OriginUserCopyWithImpl<$Res>;
   @override
   $Res call(
-      {IUserDataSource source,
-      String id,
+      {String id,
       String name,
       String description,
       String iconImagePath,
@@ -136,7 +129,6 @@ class __$OriginUserCopyWithImpl<$Res> extends _$OriginUserCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object source = freezed,
     Object id = freezed,
     Object name = freezed,
     Object description = freezed,
@@ -146,7 +138,6 @@ class __$OriginUserCopyWithImpl<$Res> extends _$OriginUserCopyWithImpl<$Res>
     Object isOfficial = freezed,
   }) {
     return _then(_OriginUser(
-      source: source == freezed ? _value.source : source as IUserDataSource,
       id: id == freezed ? _value.id : id as String,
       name: name == freezed ? _value.name : name as String,
       description:
@@ -166,16 +157,14 @@ class __$OriginUserCopyWithImpl<$Res> extends _$OriginUserCopyWithImpl<$Res>
 /// @nodoc
 class _$_OriginUser with DiagnosticableTreeMixin implements _OriginUser {
   const _$_OriginUser(
-      {@required this.source,
-      @required this.id,
+      {@required this.id,
       @required this.name,
       this.description = '',
       this.iconImagePath = 'images/default_user_icon.png',
       this.pickedImage = false,
       this.isBanned = false,
       this.isOfficial = false})
-      : assert(source != null),
-        assert(id != null),
+      : assert(id != null),
         assert(name != null),
         assert(description != null),
         assert(iconImagePath != null),
@@ -183,8 +172,6 @@ class _$_OriginUser with DiagnosticableTreeMixin implements _OriginUser {
         assert(isBanned != null),
         assert(isOfficial != null);
 
-  @override
-  final IUserDataSource source;
   @override
   final String id;
   @override
@@ -207,7 +194,7 @@ class _$_OriginUser with DiagnosticableTreeMixin implements _OriginUser {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'OriginUser(source: $source, id: $id, name: $name, description: $description, iconImagePath: $iconImagePath, pickedImage: $pickedImage, isBanned: $isBanned, isOfficial: $isOfficial)';
+    return 'OriginUser(id: $id, name: $name, description: $description, iconImagePath: $iconImagePath, pickedImage: $pickedImage, isBanned: $isBanned, isOfficial: $isOfficial)';
   }
 
   @override
@@ -215,7 +202,6 @@ class _$_OriginUser with DiagnosticableTreeMixin implements _OriginUser {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'OriginUser'))
-      ..add(DiagnosticsProperty('source', source))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('description', description))
@@ -229,8 +215,6 @@ class _$_OriginUser with DiagnosticableTreeMixin implements _OriginUser {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _OriginUser &&
-            (identical(other.source, source) ||
-                const DeepCollectionEquality().equals(other.source, source)) &&
             (identical(other.id, id) ||
                 const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.name, name) ||
@@ -255,7 +239,6 @@ class _$_OriginUser with DiagnosticableTreeMixin implements _OriginUser {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(source) ^
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(description) ^
@@ -271,8 +254,7 @@ class _$_OriginUser with DiagnosticableTreeMixin implements _OriginUser {
 
 abstract class _OriginUser implements OriginUser {
   const factory _OriginUser(
-      {@required IUserDataSource source,
-      @required String id,
+      {@required String id,
       @required String name,
       String description,
       String iconImagePath,
@@ -280,8 +262,6 @@ abstract class _OriginUser implements OriginUser {
       bool isBanned,
       bool isOfficial}) = _$_OriginUser;
 
-  @override
-  IUserDataSource get source;
   @override
   String get id;
   @override

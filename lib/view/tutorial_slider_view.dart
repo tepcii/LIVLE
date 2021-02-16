@@ -187,7 +187,7 @@ class _UserInfoInputPage extends ConsumerWidget {
         btnCancelOnPress: () => _userRegisterBtnController.reset(),
         btnOkText: 'はい',
         btnOkOnPress: () async {
-          await userState.originUser.source.registerUser(userState.originUser).then((bool value) {
+          await userState.userRepository.source.registerUser(userState.userRepository.originUser).then((bool value) {
             if (value) {
               _userRegisterBtnController.success();
               Navigator.pushReplacementNamed(context, '/home');
@@ -230,7 +230,7 @@ class _UserInfoInputPage extends ConsumerWidget {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(top: 20, bottom: MediaQuery.of(context).size.width) * 0.07,
-                  child: IconSelector(userState.originUser.iconImagePath, () async {
+                  child: IconSelector(userState.userRepository.originUser.iconImagePath, () async {
                     await pickImage(userState);
                     // if (pickedImagePath != '') {
                     //   userState.iconImagePath = pickedImagePath;
@@ -320,7 +320,7 @@ class ConfirmDialog extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.only(top: 15.0),
             child: UserIcon(
-              imagePath: userState.originUser.iconImagePath,
+              imagePath: userState.userRepository.originUser.iconImagePath,
             ),
           ),
           Padding(
@@ -331,7 +331,7 @@ class ConfirmDialog extends ConsumerWidget {
                 const Icon(FontAwesomeIcons.userTag),
                 Padding(
                   padding: const EdgeInsets.only(left: 13),
-                  child: Text(userState.originUser.id),
+                  child: Text(userState.userRepository.originUser.id),
                 ),
               ],
             ),
@@ -344,7 +344,7 @@ class ConfirmDialog extends ConsumerWidget {
                 const Icon(FontAwesomeIcons.user),
                 Padding(
                   padding: const EdgeInsets.only(left: 13),
-                  child: Text(userState.originUser.name),
+                  child: Text(userState.userRepository.originUser.name),
                 ),
               ],
             ),
@@ -357,7 +357,7 @@ class ConfirmDialog extends ConsumerWidget {
                 const Icon(FontAwesomeIcons.idCard),
                 Padding(
                   padding: const EdgeInsets.only(left: 13),
-                  child: Text(userState.originUser.description),
+                  child: Text(userState.userRepository.originUser.description),
                 ),
               ],
             ),

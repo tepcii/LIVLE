@@ -18,6 +18,13 @@ class MoneyDataSource implements IMoneyDataSource {
   }
 
   @override
+  Stream<Map<String, dynamic>> stream() {
+    final AuthService _authService = AuthService();
+    final String _uid = _authService.fetchCurrentUser().uid;
+    return FirebaseFirestore.instance.collection('money').doc(_uid).snapshots().map((DocumentSnapshot value) => value.data());
+  }
+
+  @override
   Future<bool> add(Money money) async {
     return true;
   }
