@@ -16,7 +16,7 @@ class MoneyPieChart extends ConsumerWidget {
           show: false,
         ),
         sectionsSpace: 0,
-        centerSpaceRadius: 40,
+        centerSpaceRadius: 50,
         sections: moneyViewModel.showingSections(),
       ),
     );

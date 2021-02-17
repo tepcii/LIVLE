@@ -51,10 +51,12 @@ class SpendingsConverter implements JsonConverter<List<Money>, List<dynamic>> {
     }
     return json
         .map<Money>((dynamic e) => Money(
+              id: e['id'] as String,
               amount: e['amount'] as int,
               title: e['title'] as String,
               date: e['date'] as Timestamp,
               memo: e['memo'] as String,
+              artistId: e['artistId'] as String,
             ))
         .toList();
   }

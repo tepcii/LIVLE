@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:livle/config/config.dart';
 import 'package:livle/services/input_validator.dart';
-import 'package:livle/view/form_parts/user_icon.dart';
+import 'package:livle/view/components/form_parts/user_icon.dart';
 
 class IconSelector extends StatefulWidget {
   const IconSelector(this._iconImagePath, this._onTapEvent);

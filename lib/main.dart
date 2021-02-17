@@ -34,6 +34,7 @@ Future<void> main() async {
     runApp(
       ProviderScope(
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'LIVLE',
           theme: ThemeData(
             primaryColor: AppColor.primaryColor,

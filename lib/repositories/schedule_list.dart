@@ -51,9 +51,11 @@ class SchedulesConverter implements JsonConverter<List<Schedule>, List<dynamic>>
     }
     return json
         .map<Schedule>((dynamic e) => Schedule(
-              title: e['amount'] as String,
+              id: e['id'] as String,
+              title: e['title'] as String,
               date: e['date'] as Timestamp,
               memo: e['memo'] as String,
+              artistId: e['artistId'] as String,
             ))
         .toList();
   }

@@ -10,8 +10,8 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:livle/config/config.dart';
 import 'package:livle/providers/user_register_view_provider.dart';
-import 'package:livle/view/form_parts/user_icon.dart';
-import 'package:livle/view/form_parts/user_info_form.dart';
+import 'package:livle/view/components/form_parts/user_icon.dart';
+import 'package:livle/view/components/form_parts/user_info_form.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 

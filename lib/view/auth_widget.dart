@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:livle/providers/firebase_providers.dart';
 import 'package:livle/providers/firestore_providers.dart';
 import 'package:livle/providers/user_register_view_provider.dart';
-import 'package:livle/view/common_parts/loading_indicator.dart';
+import 'package:livle/view/components/common/loading_indicator.dart';
 
 class AuthWidget extends ConsumerWidget {
   const AuthWidget({

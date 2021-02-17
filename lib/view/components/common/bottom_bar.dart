@@ -1,6 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:livle/providers/navigation.dart';
 
 class BottomBar extends ConsumerWidget {
@@ -11,12 +12,12 @@ class BottomBar extends ConsumerWidget {
     return CurvedNavigationBar(
       key: _bottomNavigationKey.state,
       index: 0,
-      height: 50.0,
+      height: 60.0,
       items: const <Widget>[
-        Icon(Icons.money, size: 30),
-        Icon(Icons.list, size: 30),
-        Icon(Icons.compare_arrows, size: 30),
-        Icon(Icons.call_split, size: 30),
+        Icon(FontAwesomeIcons.chartPie, size: 25),
+        Icon(FontAwesomeIcons.calendarAlt, size: 25),
+        Icon(Icons.library_music_outlined, size: 30),
+        Icon(FontAwesomeIcons.comments, size: 25),
       ],
       color: Colors.orangeAccent,
       buttonBackgroundColor: Colors.orangeAccent,
