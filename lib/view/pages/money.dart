@@ -5,6 +5,7 @@ import 'package:livle/providers/money_view_provider.dart';
 import 'package:livle/repositories/artist_list.dart';
 import 'package:livle/repositories/money_list.dart';
 import 'package:livle/view/components/common/loading_indicator.dart';
+import 'package:livle/view/components/money/money_list.dart';
 
 import '../components/money/pie_chart.dart';
 
@@ -31,8 +32,12 @@ class MoneyPage extends ConsumerWidget {
                 child: Column(
                   children: <Widget>[
                     MoneyPieChart(),
+                    Text('合計金額：${_moneyViewModel.totalAmount().toString()}円'),
                     const SizedBox(
                       height: 12,
+                    ),
+                    const Expanded(
+                      child: MoneyListView(),
                     ),
                   ],
                 ),

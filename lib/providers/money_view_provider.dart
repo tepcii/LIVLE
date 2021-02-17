@@ -46,8 +46,22 @@ class MoneyViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<GroupedMoney> _groupedMoneyByArtistId() {
-    final List<Money> _spendings = _moneyRepository.moneyList.spendings;
+  void listTileTouch(int index) {
+    _pieChartTouchedIndex = index;
+    notifyListeners();
+  }
+
+  int totalAmount() {
+    int _total = 0;
+    final List<Money> _spendings = moneyRepository.moneyList.spendings;
+    for (final Money money in _spendings) {
+      _total += money.amount;
+    }
+    return _total;
+  }
+
+  List<GroupedMoney> groupedMoneyByArtistId() {
+    final List<Money> _spendings = moneyRepository.moneyList.spendings;
     final Map<String, List<Money>> result = groupBy<Money, String>(_spendings, (Money money) => money.artistId);
     final List<GroupedMoney> groupedMoneyList = <GroupedMoney>[];
     result.forEach((String key, List<Money> value) {
@@ -67,7 +81,7 @@ class MoneyViewModel extends ChangeNotifier {
   }
 
   List<PieChartSectionData> showingSections() {
-    final List<GroupedMoney> _groupedMoneyList = _groupedMoneyByArtistId();
+    final List<GroupedMoney> _groupedMoneyList = groupedMoneyByArtistId();
     final List<int> _fixedList = Iterable<int>.generate(_groupedMoneyList.length).toList();
     final List<PieChartSectionData> list = _fixedList.map<PieChartSectionData>((int idx) {
       final GroupedMoney _money = _groupedMoneyList[idx];
