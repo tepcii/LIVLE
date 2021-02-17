@@ -3,21 +3,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:livle/config/config.dart';
 import 'package:livle/providers/navigation.dart';
 import 'package:livle/view/components/common/bottom_bar.dart';
+import 'package:livle/view/components/common/header_user_icon.dart';
+import 'package:livle/view/pages/artist.dart';
+import 'package:livle/view/pages/community.dart';
 import 'package:livle/view/pages/money.dart';
+import 'package:livle/view/pages/schedule.dart';
 
 class Home extends ConsumerWidget {
   Home();
 
   final List<Widget> _pages = <Widget>[
-    Container(
-      color: Colors.white,
-      child: Center(
-        child: MoneyPage(),
-      ),
-    ),
-    Container(),
-    Container(),
-    Container(),
+    MoneyPage(),
+    const SchedulePage(),
+    const ArtistPage(),
+    const CommunityPage(),
   ];
 
   @override
@@ -31,11 +30,7 @@ class Home extends ConsumerWidget {
           onPressed: null,
         ),
         actions: const <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            tooltip: 'Search',
-            onPressed: null,
-          ),
+          HeaderUserIcon(),
         ],
         backgroundColor: AppColor.primaryColor,
       ),

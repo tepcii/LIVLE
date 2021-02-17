@@ -74,6 +74,10 @@ dependencies:
   image_cropper: ^1.2.3
   flutter_image_compress: ^0.6.8
   path_provider: ^1.6.11
+  cached_network_image: ^2.5.0
+
+  # Data
+  intl: ^0.16.1
 
 dev_dependencies:
   flutter_test:

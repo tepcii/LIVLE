@@ -25,24 +25,32 @@ class MoneyPage extends ConsumerWidget {
         return _artistsStreamProvider.when(
           data: (Map<String, dynamic> data) {
             _moneyViewModel.artistRepository.artistList = ArtistList.fromJson(data);
-            return Container(
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(14.0),
-                child: Column(
-                  children: <Widget>[
-                    MoneyPieChart(),
-                    Text('合計金額：${_moneyViewModel.totalAmount().toString()}円'),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    const Expanded(
-                      child: MoneyListView(),
-                    ),
-                  ],
+            if (_moneyViewModel.moneyRepository.moneyList.spendings.isNotEmpty) {
+              return Container(
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(14.0),
+                  child: Column(
+                    children: <Widget>[
+                      MoneyPieChart(),
+                      Text('合計金額：${_moneyViewModel.totalAmount().toString()}円'),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      const Expanded(
+                        child: MoneyListView(),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            );
+              );
+            } else {
+              return Container(
+                child: const Center(
+                  child: Text('データが登録されていません。'),
+                ),
+              );
+            }
           },
           loading: () => const LoadingIndicator(),
           error: (_, __) => const LoadingIndicator(),

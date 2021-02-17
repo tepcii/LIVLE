@@ -39,7 +39,7 @@ abstract class OriginUser with _$OriginUser {
 final Provider<OriginUserRepository> originUserProvider = Provider<OriginUserRepository>(
   (ProviderReference ref) => OriginUserRepository(
     source: UserDataSource(storage: ref.read(firebaseStorageProvider)),
-    originUser: OriginUser(
+    originUser: const OriginUser(
       id: '',
       name: '',
     ),

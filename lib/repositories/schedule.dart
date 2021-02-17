@@ -6,10 +6,12 @@ class Schedule {
     this.title,
     this.date,
     this.memo,
+    this.artistId,
   });
 
   String id;
   String title;
   Timestamp date;
   String memo;
+  String artistId;
 }

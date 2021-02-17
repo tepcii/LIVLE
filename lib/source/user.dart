@@ -37,6 +37,7 @@ class UserDataSource implements IUserDataSource {
       'name': user.name,
       'description': user.description,
       'pickedImage': user.pickedImage,
+      'iconImagePath': user.iconImagePath,
     });
     // await FirebaseFirestore.instance.collection('money').doc(uid).set(<String, dynamic>{
     //   'spendings': <Map<String, dynamic>>[
