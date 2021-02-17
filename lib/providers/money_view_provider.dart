@@ -1,20 +1,33 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:livle/repositories/artist.dart';
+import 'package:livle/repositories/artist_list.dart';
+import 'package:livle/repositories/grouped_money.dart';
 import 'package:livle/repositories/money.dart';
 import 'package:livle/repositories/money_list.dart';
 
 final ChangeNotifierProvider<MoneyViewModel> moneyViewModelNotifierProvider = ChangeNotifierProvider<MoneyViewModel>(
   (ProviderReference ref) => MoneyViewModel(
-    moneyRepository: ref.read(moneyRepositoryProvider),
+    moneyRepository: ref.watch(moneyRepositoryProvider),
+    artistRepository: ref.watch(artistsRepositoryProvider),
   ),
 );
 
 class MoneyViewModel extends ChangeNotifier {
-  MoneyViewModel({@required MoneyRepository moneyRepository}) : _moneyRepository = moneyRepository;
+  MoneyViewModel({
+    @required MoneyRepository moneyRepository,
+    @required ArtistRepository artistRepository,
+  })  : _moneyRepository = moneyRepository,
+        _artistRepository = artistRepository;
+
   final MoneyRepository _moneyRepository;
+  final ArtistRepository _artistRepository;
 
   MoneyRepository get moneyRepository => _moneyRepository;
+  ArtistRepository get artistRepository => _artistRepository;
 
   int _pieChartTouchedIndex;
 
@@ -22,20 +35,6 @@ class MoneyViewModel extends ChangeNotifier {
   set pieChartTouchedIndex(int value) {
     _pieChartTouchedIndex = value;
     notifyListeners();
-  }
-
-  Future<bool> fetch() async {
-    bool _exists;
-    await _moneyRepository.source.fetch().then((Map<String, dynamic> value) {
-      if (value != null) {
-        _moneyRepository.moneyList = MoneyList.fromJson(value);
-        _exists = true;
-      } else {
-        _exists = false;
-      }
-    });
-    notifyListeners();
-    return _exists;
   }
 
   void pieChartTouchCallBack(PieTouchResponse pieTouchResponse) {
@@ -47,25 +46,41 @@ class MoneyViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<PieChartSectionData> showingSections() {
-    final MoneyList _moneyList = moneyRepository.moneyList;
-    final List<int> _fixedList = Iterable<int>.generate(_moneyList.spendings.length).toList();
-    return _fixedList.map<PieChartSectionData>((int idx) {
-      final Money _money = _moneyList.spendings[idx];
-      final bool isTouched = idx == _pieChartTouchedIndex;
-      final double fontSize = isTouched ? 25 : 16;
-      final double radius = isTouched ? 60 : 50;
-      return PieChartSectionData(
-        color: const Color(0xff0293ee),
-        value: 40,
-        title: '40%',
-        radius: radius,
-        titleStyle: TextStyle(
-          fontSize: fontSize,
-          fontWeight: FontWeight.bold,
-          color: const Color(0xffffffff),
+  List<GroupedMoney> _groupedMoneyByArtistId() {
+    final List<Money> _spendings = _moneyRepository.moneyList.spendings;
+    final Map<String, List<Money>> result = groupBy<Money, String>(_spendings, (Money money) => money.artistId);
+    final List<GroupedMoney> groupedMoneyList = <GroupedMoney>[];
+    result.forEach((String key, List<Money> value) {
+      int _totalAmount = 0;
+      for (final Money money in value) {
+        _totalAmount += money.amount;
+      }
+      groupedMoneyList.add(
+        GroupedMoney(
+          artist: _artistRepository.artistList.artists.singleWhere((Artist artist) => artist.id == key),
+          totalAmount: _totalAmount,
         ),
       );
+    });
+
+    return groupedMoneyList;
+  }
+
+  List<PieChartSectionData> showingSections() {
+    final List<GroupedMoney> _groupedMoneyList = _groupedMoneyByArtistId();
+    final List<int> _fixedList = Iterable<int>.generate(_groupedMoneyList.length).toList();
+    final List<PieChartSectionData> list = _fixedList.map<PieChartSectionData>((int idx) {
+      final GroupedMoney _money = _groupedMoneyList[idx];
+      final bool isTouched = idx == _pieChartTouchedIndex;
+      // final double fontSize = isTouched ? 25 : 16;
+      final double radius = isTouched ? 60 : 50;
+      return PieChartSectionData(
+        color: Color(_money.artist.color),
+        value: _money.totalAmount.toDouble(),
+        showTitle: false,
+        radius: radius,
+      );
     }).toList();
+    return list;
   }
 }

@@ -19,3 +19,13 @@ final StreamProvider<Map<String, dynamic>> moneyStreamProvider = StreamProvider<
         (DocumentSnapshot value) => value.data(),
       );
 });
+
+final StreamProvider<Map<String, dynamic>> artistsStreamProvider = StreamProvider<Map<String, dynamic>>((_) {
+  final CollectionReference ref = FirebaseFirestore.instance.collection('artists');
+  final AuthService _authService = AuthService();
+  final String _uid = _authService.fetchCurrentUser().uid;
+  final Stream<Map<String, dynamic>> stream = ref.doc(_uid).snapshots().map(
+        (DocumentSnapshot value) => value.data(),
+      );
+  return stream;
+});

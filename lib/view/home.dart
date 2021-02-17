@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:livle/config/config.dart';
 import 'package:livle/providers/navigation.dart';
+import 'package:livle/view/components/common/bottom_bar.dart';
 import 'package:livle/view/pages/money.dart';
-import 'common_parts/bottom_bar.dart';
 
 class Home extends ConsumerWidget {
   Home();
