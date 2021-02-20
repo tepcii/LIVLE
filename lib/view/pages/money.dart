@@ -21,10 +21,14 @@ class MoneyPage extends ConsumerWidget {
     final AsyncValue<Map<String, dynamic>> _artistsStreamProvider = watch(artistsStreamProvider);
     return _moneyStreamProvider.when(
       data: (Map<String, dynamic> data) {
-        _moneyViewModel.moneyRepository.moneyList = MoneyList.fromJson(data);
+        if (data != null) {
+          _moneyViewModel.moneyRepository.moneyList = MoneyList.fromJson(data);
+        }
         return _artistsStreamProvider.when(
           data: (Map<String, dynamic> data) {
-            _moneyViewModel.artistRepository.artistList = ArtistList.fromJson(data);
+            if (data != null) {
+              _moneyViewModel.artistRepository.artistList = ArtistList.fromJson(data);
+            }
             if (_moneyViewModel.moneyRepository.moneyList.spendings.isNotEmpty) {
               return Container(
                 color: Colors.white,

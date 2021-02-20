@@ -17,10 +17,14 @@ class SchedulePage extends ConsumerWidget {
     final AsyncValue<Map<String, dynamic>> _artistsStreamProvider = watch(artistsStreamProvider);
     return _scheduleStreamProvider.when(
       data: (Map<String, dynamic> data) {
-        _scheduleViewModel.scheduleRepository.scheduleList = ScheduleList.fromJson(data);
+        if (data != null) {
+          _scheduleViewModel.scheduleRepository.scheduleList = ScheduleList.fromJson(data);
+        }
         return _artistsStreamProvider.when(
           data: (Map<String, dynamic> data) {
-            _scheduleViewModel.artistRepository.artistList = ArtistList.fromJson(data);
+            if (data != null) {
+              _scheduleViewModel.artistRepository.artistList = ArtistList.fromJson(data);
+            }
             return Container(color: Colors.white, child: const ScheduleListView());
           },
           loading: () => const LoadingIndicator(),

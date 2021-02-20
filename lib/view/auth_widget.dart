@@ -32,6 +32,7 @@ class AuthWidget extends ConsumerWidget {
   }
 
   Widget _data(BuildContext context, User user, UserRegisterViewModel userState, AsyncValue<Map<String, dynamic>> userStream) {
+    // logout();
     if (user != null) {
       return userStream.when(
         data: (Map<String, dynamic> data) {

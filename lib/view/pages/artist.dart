@@ -18,13 +18,19 @@ class ArtistPage extends ConsumerWidget {
     final AsyncValue<Map<String, dynamic>> _moneyStreamProvider = watch(moneyStreamProvider);
     return _scheduleStreamProvider.when(
       data: (Map<String, dynamic> data) {
-        _artistViewModel.scheduleRepository.scheduleList = ScheduleList.fromJson(data);
+        if (data != null) {
+          _artistViewModel.scheduleRepository.scheduleList = ScheduleList.fromJson(data);
+        }
         return _artistsStreamProvider.when(
           data: (Map<String, dynamic> data) {
-            _artistViewModel.artistRepository.artistList = ArtistList.fromJson(data);
+            if (data != null) {
+              _artistViewModel.artistRepository.artistList = ArtistList.fromJson(data);
+            }
             return _moneyStreamProvider.when(
               data: (Map<String, dynamic> data) {
-                _artistViewModel.moneyRepository.moneyList = MoneyList.fromJson(data);
+                if (data != null) {
+                  _artistViewModel.moneyRepository.moneyList = MoneyList.fromJson(data);
+                }
                 return Container(
                   color: Colors.white,
                 );
