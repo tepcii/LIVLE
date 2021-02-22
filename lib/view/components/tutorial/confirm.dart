@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:livle/providers/user_register_view_provider.dart';
-import 'package:livle/view/components/form_parts/user_icon.dart';
+import 'package:livle/providers/view_model/user_register.dart';
+import 'package:livle/view/components/tutorial/user_icon.dart';
 
 class ConfirmDialog extends ConsumerWidget {
   const ConfirmDialog({Key key}) : super(key: key);

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_overboard/flutter_overboard.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:livle/config/config.dart';
-import 'package:livle/providers/user_register_view_provider.dart';
-import 'package:livle/view/components/form_parts/user_info_form.dart';
+import 'package:livle/providers/view_model/user_register.dart';
+import 'package:livle/view/components/tutorial/user_info_form.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class TutorialSliderView extends StatefulWidget {
@@ -74,24 +74,28 @@ class _WelcomePage extends StatelessWidget {
 class _DescriptionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(mainAxisAlignment: MainAxisAlignment.spaceAround, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
-      Image.asset(
-        'images/giraffe.png',
-        width: 500,
-        height: 300,
-      ),
-      const Padding(
-        padding: EdgeInsets.only(bottom: 30),
-        child: Text(
-          'まずはユーザー登録をしましょう！',
-          style: TextStyle(
-            decoration: TextDecoration.none,
-            fontSize: 20,
-            color: Colors.black,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Image.asset(
+          'images/giraffe.png',
+          width: 500,
+          height: 300,
+        ),
+        const Padding(
+          padding: EdgeInsets.only(bottom: 30),
+          child: Text(
+            'まずはユーザー登録をしましょう！',
+            style: TextStyle(
+              decoration: TextDecoration.none,
+              fontSize: 20,
+              color: Colors.black,
+            ),
           ),
         ),
-      ),
-    ]);
+      ],
+    );
   }
 }
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
-import 'package:livle/providers/schedule_view_provider.dart';
+import 'package:livle/providers/view_model/schedule.dart';
 import 'package:livle/repositories/schedule.dart';
 import 'package:livle/view/components/schedule/schedule_list_tile.dart';
 

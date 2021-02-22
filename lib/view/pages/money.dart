@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:livle/providers/firestore_providers.dart';
-import 'package:livle/providers/money_view_provider.dart';
+import 'package:livle/providers/view_model/money.dart';
 import 'package:livle/repositories/artist_list.dart';
 import 'package:livle/repositories/money_list.dart';
 import 'package:livle/view/components/common/loading_indicator.dart';
@@ -50,8 +51,20 @@ class MoneyPage extends ConsumerWidget {
               );
             } else {
               return Container(
-                child: const Center(
-                  child: Text('データが登録されていません。'),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const Text('データが登録されていません。'),
+                      RaisedButton.icon(
+                        shape: const StadiumBorder(),
+                        color: Colors.orange,
+                        onPressed: () => Navigator.pushNamed(context, '/register_money'),
+                        icon: const Icon(FontAwesomeIcons.plus),
+                        label: const Text('登録する'),
+                      ),
+                    ],
+                  ),
                 ),
               );
             }

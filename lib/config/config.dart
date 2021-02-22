@@ -6,10 +6,6 @@ class AppColor {
   static const Color registerButtonColor = Color(0xFFFF9800);
 }
 
-final Map<String, String> regs = <String, String>{
-  'userId': r'^[a-zA-Z0-9_]+$',
-};
-
 class AppConfig {
   static const String APP_NAME = 'LIVLE';
 
@@ -43,5 +39,4 @@ class AppConfig {
 
 こんにちは
 ''';
-
 }

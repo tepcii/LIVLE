@@ -32,6 +32,22 @@ class MoneyDataSource implements IMoneyDataSource {
 
   @override
   Future<bool> add(Money money) async {
+    final AuthService _auth = AuthService();
+    final User firebaseUser = _auth.fetchCurrentUser();
+    final String uid = firebaseUser.uid;
+    await FirebaseFirestore.instance.collection('money').doc(uid).update(<String, dynamic>{
+      'spendings': FieldValue.arrayUnion(<Map<String, dynamic>>[
+        <String, dynamic>{
+          'id': money.id,
+          'amount': money.amount,
+          'title': money.title,
+          'memo': money.memo,
+          'date': money.date,
+          'artistId': money.artistId,
+        },
+      ]),
+    });
+
     return true;
   }
 

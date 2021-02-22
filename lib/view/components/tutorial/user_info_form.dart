@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:livle/config/config.dart';
 import 'package:livle/services/input_validator.dart';
-import 'package:livle/view/components/form_parts/user_icon.dart';
+import 'package:livle/view/components/tutorial/user_icon.dart';
 
 class IconSelector extends StatefulWidget {
   const IconSelector(this._iconImagePath, this._onTapEvent);
@@ -68,89 +68,11 @@ class UserIdInput extends StatefulWidget {
 
 class _UserIdInputState extends State<UserIdInput> {
   String _textLength;
-  String _maxLength;
+  final String _maxLength = '20';
 
   @override
   void initState() {
     _textLength = '0';
-    _maxLength = '20';
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-        cursorColor: Colors.black,
-        autovalidateMode: AutovalidateMode.always,
-        maxLength: int.parse(_maxLength),
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: Colors.white,
-          prefixIcon: const Icon(
-            FontAwesomeIcons.userTag,
-            color: AppColor.primaryColor,
-          ),
-          suffixText: '$_textLength/$_maxLength',
-          labelText: '',
-          labelStyle: const TextStyle(
-            color: Colors.black,
-          ),
-          hintText: 'ユーザーID',
-          hintStyle: const TextStyle(
-            color: Colors.black,
-          ),
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.black,
-              width: 1,
-            ),
-          ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.cyan,
-              width: 2,
-            ),
-          ),
-          errorBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.red,
-              width: 2,
-            ),
-          ),
-          focusedErrorBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.red,
-              width: 2,
-            ),
-          ),
-        ),
-        validator: (String value) => userIdValidator(value),
-        onChanged: (String value) {
-          setState(() {
-            _textLength = value.length.toString();
-          });
-          widget.onChanged(value);
-        });
-  }
-}
-
-class UserNameInput extends StatefulWidget {
-  const UserNameInput({Key key, this.onChanged}) : super(key: key);
-
-  final Function onChanged;
-
-  @override
-  _UserNameInputState createState() => _UserNameInputState();
-}
-
-class _UserNameInputState extends State<UserNameInput> {
-  String _textLength;
-  String _maxLength;
-
-  @override
-  void initState() {
-    _textLength = '0';
-    _maxLength = '20';
     super.initState();
   }
 
@@ -164,17 +86,20 @@ class _UserNameInputState extends State<UserNameInput> {
         filled: true,
         fillColor: Colors.white,
         prefixIcon: const Icon(
-          FontAwesomeIcons.user,
+          FontAwesomeIcons.userTag,
           color: AppColor.primaryColor,
         ),
         suffixText: '$_textLength/$_maxLength',
+        suffixStyle: const TextStyle(
+          color: Colors.black,
+        ),
         labelText: '',
         labelStyle: const TextStyle(
           color: Colors.black,
         ),
-        hintText: 'ユーザー名',
+        hintText: 'ユーザーID',
         hintStyle: const TextStyle(
-          color: Colors.black,
+          color: Colors.grey,
         ),
         enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(
@@ -201,7 +126,84 @@ class _UserNameInputState extends State<UserNameInput> {
           ),
         ),
       ),
-      validator: (String value) => userNameValidator(value),
+      validator: (String value) => OriginValidators.userId(value, _maxLength),
+      onChanged: (String value) {
+        setState(() {
+          _textLength = value.length.toString();
+        });
+        widget.onChanged(value);
+      },
+    );
+  }
+}
+
+class UserNameInput extends StatefulWidget {
+  const UserNameInput({Key key, this.onChanged}) : super(key: key);
+
+  final Function onChanged;
+
+  @override
+  _UserNameInputState createState() => _UserNameInputState();
+}
+
+class _UserNameInputState extends State<UserNameInput> {
+  String _textLength;
+  final String _maxLength = '20';
+
+  @override
+  void initState() {
+    _textLength = '0';
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      cursorColor: Colors.black,
+      autovalidateMode: AutovalidateMode.always,
+      maxLength: int.parse(_maxLength),
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.white,
+        prefixIcon: const Icon(
+          FontAwesomeIcons.user,
+          color: AppColor.primaryColor,
+        ),
+        suffixText: '$_textLength/$_maxLength',
+        labelText: '',
+        labelStyle: const TextStyle(
+          color: Colors.black,
+        ),
+        hintText: 'ユーザー名',
+        hintStyle: const TextStyle(
+          color: Colors.grey,
+        ),
+        enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.black,
+            width: 1,
+          ),
+        ),
+        focusedBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.cyan,
+            width: 2,
+          ),
+        ),
+        errorBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.red,
+            width: 2,
+          ),
+        ),
+        focusedErrorBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.red,
+            width: 2,
+          ),
+        ),
+      ),
+      validator: (String value) => OriginValidators.userName(value, _maxLength),
       onChanged: (String value) {
         setState(() {
           _textLength = value.length.toString();
@@ -223,70 +225,73 @@ class UserDescTextField extends StatefulWidget {
 
 class _UserDescTextFieldState extends State<UserDescTextField> {
   String _textLength;
-  String _maxLength;
+  final String _maxLength = '100';
 
   @override
   void initState() {
     _textLength = '0';
-    _maxLength = '100';
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-        cursorColor: Colors.black,
-        autovalidateMode: AutovalidateMode.always,
-        keyboardType: TextInputType.multiline,
-        maxLines: null,
-        maxLength: int.parse(_maxLength),
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: Colors.white,
-          prefixIcon: const Icon(
-            FontAwesomeIcons.idCard,
-            color: AppColor.primaryColor,
-          ),
-          suffixText: '$_textLength/$_maxLength',
-          labelText: '',
-          labelStyle: const TextStyle(
+      cursorColor: Colors.black,
+      autovalidateMode: AutovalidateMode.always,
+      keyboardType: TextInputType.multiline,
+      maxLines: null,
+      maxLength: int.parse(_maxLength),
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.white,
+        prefixIcon: const Icon(
+          FontAwesomeIcons.idCard,
+          color: AppColor.primaryColor,
+        ),
+        suffixText: '$_textLength/$_maxLength',
+        suffixStyle: const TextStyle(
+          color: Colors.black,
+        ),
+        labelText: '',
+        labelStyle: const TextStyle(
+          color: Colors.black,
+        ),
+        hintText: '説明',
+        hintStyle: const TextStyle(
+          color: Colors.grey,
+        ),
+        enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
             color: Colors.black,
-          ),
-          hintText: '説明',
-          hintStyle: const TextStyle(
-            color: Colors.black,
-          ),
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.black,
-              width: 1,
-            ),
-          ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.cyan,
-              width: 2,
-            ),
-          ),
-          errorBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.red,
-              width: 2,
-            ),
-          ),
-          focusedErrorBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.red,
-              width: 2,
-            ),
+            width: 1,
           ),
         ),
-        validator: (String value) => userDescValidator(value),
-        onChanged: (String value) {
-          setState(() {
-            _textLength = value.length.toString();
-          });
-          widget.onChanged(value);
+        focusedBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.cyan,
+            width: 2,
+          ),
+        ),
+        errorBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.red,
+            width: 2,
+          ),
+        ),
+        focusedErrorBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.red,
+            width: 2,
+          ),
+        ),
+      ),
+      validator: (String value) => OriginValidators.userDesc(value, _maxLength),
+      onChanged: (String value) {
+        setState(() {
+          _textLength = value.length.toString();
         });
+        widget.onChanged(value);
+      },
+    );
   }
 }

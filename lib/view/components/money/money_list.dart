@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
-import 'package:livle/providers/money_view_provider.dart';
+import 'package:livle/providers/view_model/money.dart';
 import 'package:livle/repositories/grouped_money.dart';
 import 'package:livle/view/components/money/money_list_tile.dart';
 
