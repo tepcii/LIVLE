@@ -35,9 +35,11 @@ class SchedulePage extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       const Text('データが登録されていません。'),
-                      RaisedButton.icon(
-                        shape: const StadiumBorder(),
-                        color: Colors.orange,
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.orange,
+                          shape: const StadiumBorder(),
+                        ),
                         onPressed: () => print('登録画面'),
                         icon: const Icon(FontAwesomeIcons.plus),
                         label: const Text('登録する'),

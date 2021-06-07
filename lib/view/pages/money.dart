@@ -7,6 +7,7 @@ import 'package:livle/repositories/artist_list.dart';
 import 'package:livle/repositories/money_list.dart';
 import 'package:livle/view/components/common/loading_indicator.dart';
 import 'package:livle/view/components/money/money_list.dart';
+import 'package:livle/view/components/money/money_tab_bar.dart';
 
 import '../components/money/pie_chart.dart';
 
@@ -31,24 +32,7 @@ class MoneyPage extends ConsumerWidget {
               _moneyViewModel.artistRepository.artistList = ArtistList.fromJson(data);
             }
             if (_moneyViewModel.moneyRepository.moneyList.spendings.isNotEmpty) {
-              return Container(
-                color: Colors.white,
-                child: Padding(
-                  padding: const EdgeInsets.all(14.0),
-                  child: Column(
-                    children: <Widget>[
-                      MoneyPieChart(),
-                      Text('合計金額：${_moneyViewModel.totalAmount().toString()}円'),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      const Expanded(
-                        child: MoneyListView(),
-                      ),
-                    ],
-                  ),
-                ),
-              );
+              return MoneyTabBarView();
             } else {
               return Container(
                 child: Center(
@@ -56,9 +40,11 @@ class MoneyPage extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       const Text('データが登録されていません。'),
-                      RaisedButton.icon(
-                        shape: const StadiumBorder(),
-                        color: Colors.orange,
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.orange,
+                          shape: const StadiumBorder(),
+                        ),
                         onPressed: () => Navigator.pushNamed(context, '/register_money'),
                         icon: const Icon(FontAwesomeIcons.plus),
                         label: const Text('登録する'),

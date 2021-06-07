@@ -6,6 +6,7 @@ import 'package:livle/providers/firestore_providers.dart';
 import 'package:livle/repositories/artist_list.dart';
 import 'package:livle/repositories/money_list.dart';
 import 'package:livle/repositories/schedule_list.dart';
+import 'package:livle/view/components/artist/artist_grid.dart';
 import 'package:livle/view/components/common/loading_indicator.dart';
 
 class ArtistPage extends ConsumerWidget {
@@ -35,6 +36,7 @@ class ArtistPage extends ConsumerWidget {
                 if (_artistViewModel.artistRepository.artistList.artists.isNotEmpty) {
                   return Container(
                     color: Colors.white,
+                    child: const ArtistGrid(),
                   );
                 } else {
                   return Container(
@@ -43,9 +45,11 @@ class ArtistPage extends ConsumerWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           const Text('データが登録されていません。'),
-                          RaisedButton.icon(
-                            shape: const StadiumBorder(),
-                            color: Colors.orange,
+                          ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.orange,
+                              shape: const StadiumBorder(),
+                            ),
                             onPressed: () => print('登録画面'),
                             icon: const Icon(FontAwesomeIcons.plus),
                             label: const Text('登録する'),

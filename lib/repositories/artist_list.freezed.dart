@@ -101,9 +101,10 @@ class __$ArtistListCopyWithImpl<$Res> extends _$ArtistListCopyWithImpl<$Res>
 @JsonSerializable()
 
 /// @nodoc
-class _$_ArtistList implements _ArtistList {
+class _$_ArtistList extends _ArtistList {
   const _$_ArtistList({@ArtistsConverter() this.artists = const <Artist>[]})
-      : assert(artists != null);
+      : assert(artists != null),
+        super._();
 
   factory _$_ArtistList.fromJson(Map<String, dynamic> json) =>
       _$_$_ArtistListFromJson(json);
@@ -140,7 +141,8 @@ class _$_ArtistList implements _ArtistList {
   }
 }
 
-abstract class _ArtistList implements ArtistList {
+abstract class _ArtistList extends ArtistList {
+  const _ArtistList._() : super._();
   const factory _ArtistList({@ArtistsConverter() List<Artist> artists}) =
       _$_ArtistList;
 
