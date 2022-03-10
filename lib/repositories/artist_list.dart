@@ -29,8 +29,13 @@ abstract class ArtistList with _$ArtistList {
   const factory ArtistList({
     @ArtistsConverter() @Default(<Artist>[]) List<Artist> artists,
   }) = _ArtistList;
+  const ArtistList._();
 
   factory ArtistList.fromJson(Map<String, dynamic> json) => _$ArtistListFromJson(json);
+
+  Artist getArtistById(String id) {
+    return artists.firstWhere((Artist e) => e.id == id);
+  }
 }
 
 final Provider<ArtistRepository> artistsRepositoryProvider = Provider<ArtistRepository>(

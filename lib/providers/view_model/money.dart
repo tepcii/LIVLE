@@ -80,6 +80,11 @@ class MoneyViewModel extends ChangeNotifier {
     return groupedMoneyList;
   }
 
+  List<Money> moneyListData() {
+    final List<Money> _spendings = moneyRepository.moneyList.spendings;
+    return _spendings;
+  }
+
   List<PieChartSectionData> showingSections() {
     final List<GroupedMoney> _groupedMoneyList = groupedMoneyByArtistId();
     final List<int> _fixedList = Iterable<int>.generate(_groupedMoneyList.length).toList();

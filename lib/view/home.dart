@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:livle/config/config.dart';
 import 'package:livle/providers/navigation.dart';
 import 'package:livle/view/components/common/bottom_bar.dart';
+import 'package:livle/view/components/common/drawer.dart';
 import 'package:livle/view/components/common/header_user_icon.dart';
 import 'package:livle/view/pages/artist.dart';
 import 'package:livle/view/pages/community.dart';
@@ -24,16 +25,12 @@ class Home extends ConsumerWidget {
     final StateController<int> _pageIndex = watch(pageIndexProvider);
     return Scaffold(
       appBar: AppBar(
-        leading: const IconButton(
-          icon: Icon(Icons.menu),
-          tooltip: 'Navigation menu',
-          onPressed: null,
-        ),
         actions: const <Widget>[
           HeaderUserIcon(),
         ],
         backgroundColor: AppColor.primaryColor,
       ),
+      drawer: const OriginDrawer(),
       body: _pages[_pageIndex.state],
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       bottomNavigationBar: BottomBar(),

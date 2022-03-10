@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
-import 'package:livle/providers/user_view_provider.dart';
+import 'package:livle/providers/view_model/user.dart';
 
 class HeaderUserIcon extends ConsumerWidget {
   const HeaderUserIcon({Key key}) : super(key: key);

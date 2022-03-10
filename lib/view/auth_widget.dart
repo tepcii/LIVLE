@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:livle/providers/firebase_providers.dart';
 import 'package:livle/providers/firestore_providers.dart';
-import 'package:livle/providers/user_register_view_provider.dart';
+import 'package:livle/providers/view_model/user_register.dart';
 import 'package:livle/view/components/common/loading_indicator.dart';
 
 class AuthWidget extends ConsumerWidget {
@@ -32,6 +32,7 @@ class AuthWidget extends ConsumerWidget {
   }
 
   Widget _data(BuildContext context, User user, UserRegisterViewModel userState, AsyncValue<Map<String, dynamic>> userStream) {
+    // logout();
     if (user != null) {
       return userStream.when(
         data: (Map<String, dynamic> data) {

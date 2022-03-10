@@ -14,7 +14,7 @@ class BottomBar extends ConsumerWidget {
       index: 0,
       height: 60.0,
       items: const <Widget>[
-        Icon(FontAwesomeIcons.chartPie, size: 25),
+        Icon(FontAwesomeIcons.yenSign, size: 25),
         Icon(FontAwesomeIcons.calendarAlt, size: 25),
         Icon(Icons.library_music_outlined, size: 30),
         Icon(FontAwesomeIcons.comments, size: 25),

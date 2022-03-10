@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_twitter/flutter_twitter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:apple_sign_in/apple_sign_in.dart';
-import 'package:livle/providers/user_register_view_provider.dart';
+import 'package:livle/providers/view_model/user_register.dart';
 
 import '../config/secret.dart' as secret;
 

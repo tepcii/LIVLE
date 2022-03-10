@@ -5,7 +5,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:livle/config/config.dart';
-import 'package:livle/view/tutorial_slider_view.dart';
+import 'package:livle/view/pages/register_money.dart';
+import 'package:livle/view/components/tutorial/tutorial_slider_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:livle/config/secret.dart';
 import 'package:livle/view/user_checker.dart';
@@ -49,6 +50,7 @@ Future<void> main() async {
             '/home': (BuildContext context) => Home(),
             '/loginSelect': (BuildContext context) => LoginSelect(_appleSignInIsAvailable),
             '/tutorial': (BuildContext context) => const TutorialSliderView(),
+            '/register_money': (BuildContext context) => const RegisterMoney(),
           },
         ),
       ),

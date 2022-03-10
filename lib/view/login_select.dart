@@ -12,7 +12,6 @@ import 'package:livle/config/config.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class LoginSelect extends StatelessWidget {
-
   const LoginSelect(this._appleSignInIsAvailable);
 
   final bool _appleSignInIsAvailable;
@@ -106,7 +105,6 @@ class _LogoState extends State<Logo> with SingleTickerProviderStateMixin {
 }
 
 class CardSlider extends StatefulWidget {
-
   const CardSlider(this._appleSignInIsAvailable);
 
   final bool _appleSignInIsAvailable;
@@ -156,7 +154,6 @@ class _CardSliderState extends State<CardSlider> {
 }
 
 class SignInButtons extends StatefulWidget {
-
   const SignInButtons(this._controller, this._appleSignInIsAvailable);
 
   final PageController _controller;
@@ -166,8 +163,7 @@ class SignInButtons extends StatefulWidget {
   _SignInButtonsState createState() => _SignInButtonsState();
 }
 
-class _SignInButtonsState extends State<SignInButtons>
-    with TickerProviderStateMixin {
+class _SignInButtonsState extends State<SignInButtons> with TickerProviderStateMixin {
   final AuthService authService = AuthService();
   // ボタン押下時にロード中とわかるようにボタンを変形させるアニメーション
   final RoundedLoadingButtonController _twitterBtnController = RoundedLoadingButtonController();
@@ -247,7 +243,7 @@ class _SignInButtonsState extends State<SignInButtons>
             color: AppColor.signinButtonColor,
             onPressed: () => _onPressedGoogle(context),
           ),
-          RaisedButton(
+          ElevatedButton(
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 12),
               child: Row(
@@ -257,11 +253,13 @@ class _SignInButtonsState extends State<SignInButtons>
                     margin: const EdgeInsets.only(right: 15),
                     child: const Icon(
                       FontAwesomeIcons.envelope,
+                      color: Colors.black,
                     ),
                   ),
                   const Text(
                     'E-mail',
                     style: TextStyle(
+                      color: Colors.black,
                       fontSize: 23,
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.bold,
@@ -270,8 +268,10 @@ class _SignInButtonsState extends State<SignInButtons>
                 ],
               ),
             ),
-            color: AppColor.signinButtonColor,
-            shape: const StadiumBorder(),
+            style: ElevatedButton.styleFrom(
+              primary: AppColor.signinButtonColor,
+              shape: const StadiumBorder(),
+            ),
             onPressed: () {
               if (send) {
                 return;
@@ -285,33 +285,34 @@ class _SignInButtonsState extends State<SignInButtons>
             },
           ),
           // Apple Sign Inが使用可能ならばAppleログインボタンを表示
-          if (widget._appleSignInIsAvailable) RoundedLoadingButton(
-            controller: _appleBtnController,
-            child: Container(
-              margin: const EdgeInsets.symmetric(vertical: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    margin: const EdgeInsets.only(right: 15),
-                    child: const Icon(
-                      FontAwesomeIcons.apple,
+          if (widget._appleSignInIsAvailable)
+            RoundedLoadingButton(
+              controller: _appleBtnController,
+              child: Container(
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      margin: const EdgeInsets.only(right: 15),
+                      child: const Icon(
+                        FontAwesomeIcons.apple,
+                      ),
                     ),
-                  ),
-                  const Text(
-                    'Apple',
-                    style: TextStyle(
-                      fontSize: 23,
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.bold,
+                    const Text(
+                      'Apple',
+                      style: TextStyle(
+                        fontSize: 23,
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
+              color: AppColor.signinButtonColor,
+              onPressed: () => _onPressedApple(context),
             ),
-            color: AppColor.signinButtonColor,
-            onPressed: () => _onPressedApple(context),
-          ),
           const Text(
             'ログイン方法を選んでください。',
           ),
@@ -388,7 +389,6 @@ class _SignInButtonsState extends State<SignInButtons>
       btnOkOnPress: () {},
     ).show();
   }
-
 }
 
 class MailPassForm extends StatefulWidget {
@@ -399,13 +399,12 @@ class MailPassForm extends StatefulWidget {
 }
 
 class _MailPassFormState extends State<MailPassForm> {
-  final RoundedLoadingButtonController _loginButtonController =
-      RoundedLoadingButtonController();
+  final RoundedLoadingButtonController _loginButtonController = RoundedLoadingButtonController();
   final AuthService authService = AuthService();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _mail;
   String _pass;
-  bool _showPassword ;
+  bool _showPassword;
 
   @override
   void initState() {
@@ -467,9 +466,7 @@ class _MailPassFormState extends State<MailPassForm> {
                         hintText: 'sample@example.com',
                         border: OutlineInputBorder(),
                       ),
-                      validator: (String value) => !EmailValidator.validate(value)
-                            ? '正しいメールアドレスを入力してください。'
-                            : null,
+                      validator: (String value) => !EmailValidator.validate(value) ? '正しいメールアドレスを入力してください。' : null,
                       onChanged: _handleEmail,
                     ),
                     TextFormField(
@@ -482,8 +479,14 @@ class _MailPassFormState extends State<MailPassForm> {
                         border: const OutlineInputBorder(),
                         suffixIcon: IconButton(
                           icon: _showPassword
-                              ? const Icon(FontAwesomeIcons.eye, color: Colors.green,)
-                              : const Icon(FontAwesomeIcons.eyeSlash, color: Colors.red,),
+                              ? const Icon(
+                                  FontAwesomeIcons.eye,
+                                  color: Colors.green,
+                                )
+                              : const Icon(
+                                  FontAwesomeIcons.eyeSlash,
+                                  color: Colors.red,
+                                ),
                           onPressed: () {
                             setState(() {
                               _showPassword = !_showPassword;
@@ -491,10 +494,7 @@ class _MailPassFormState extends State<MailPassForm> {
                           },
                         ),
                       ),
-                      validator: (String value) => value.length < 6
-                            ? '6文字以上に設定してください。'
-                            : null
-                      ,
+                      validator: (String value) => value.length < 6 ? '6文字以上に設定してください。' : null,
                       onChanged: _handlePass,
                     ),
                     RoundedLoadingButton(
@@ -535,7 +535,6 @@ class _MailPassFormState extends State<MailPassForm> {
       btnOkOnPress: () {},
     ).show();
   }
-
 }
 
 // ログイン後、ホーム画面に遷移
