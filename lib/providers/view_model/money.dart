@@ -8,6 +8,7 @@ import 'package:livle/repositories/artist_list.dart';
 import 'package:livle/repositories/grouped_money.dart';
 import 'package:livle/repositories/money.dart';
 import 'package:livle/repositories/money_list.dart';
+import "package:collection/collection.dart";
 
 final ChangeNotifierProvider<MoneyViewModel> moneyViewModelNotifierProvider = ChangeNotifierProvider<MoneyViewModel>(
   (ChangeNotifierProviderRef<MoneyViewModel> ref) => MoneyViewModel(
@@ -62,7 +63,7 @@ class MoneyViewModel extends ChangeNotifier {
 
   List<GroupedMoney> groupedMoneyByArtistId() {
     final List<Money> _spendings = moneyRepository.moneyList.spendings;
-    final Map<String, List<Money>> result = groupBy<Money, String>(_spendings, (Money money) => money.artistId);
+    final Map<String, List<Money>> result = _spendings.groupListsBy((Money money) => money.artistId);
     final List<GroupedMoney> groupedMoneyList = <GroupedMoney>[];
     result.forEach((String key, List<Money> value) {
       int _totalAmount = 0;

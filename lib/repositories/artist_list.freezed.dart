@@ -1,5 +1,7 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'artist_list.dart';
 
@@ -8,39 +10,23 @@ part of 'artist_list.dart';
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
+
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+
 ArtistList _$ArtistListFromJson(Map<String, dynamic> json) {
   return _ArtistList.fromJson(json);
 }
 
 /// @nodoc
-class _$ArtistListTearOff {
-  const _$ArtistListTearOff();
-
-// ignore: unused_element
-  _ArtistList call(
-      {@ArtistsConverter() List<Artist> artists = const <Artist>[]}) {
-    return _ArtistList(
-      artists: artists,
-    );
-  }
-
-// ignore: unused_element
-  ArtistList fromJson(Map<String, Object> json) {
-    return ArtistList.fromJson(json);
-  }
-}
-
-/// @nodoc
-// ignore: unused_element
-const $ArtistList = _$ArtistListTearOff();
-
-/// @nodoc
 mixin _$ArtistList {
   @ArtistsConverter()
-  List<Artist> get artists;
+  List<Artist> get artists => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson();
-  $ArtistListCopyWith<ArtistList> get copyWith;
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $ArtistListCopyWith<ArtistList> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -61,10 +47,13 @@ class _$ArtistListCopyWithImpl<$Res> implements $ArtistListCopyWith<$Res> {
 
   @override
   $Res call({
-    Object artists = freezed,
+    Object? artists = freezed,
   }) {
     return _then(_value.copyWith(
-      artists: artists == freezed ? _value.artists : artists as List<Artist>,
+      artists: artists == freezed
+          ? _value.artists
+          : artists // ignore: cast_nullable_to_non_nullable
+              as List<Artist>,
     ));
   }
 }
@@ -90,29 +79,37 @@ class __$ArtistListCopyWithImpl<$Res> extends _$ArtistListCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object artists = freezed,
+    Object? artists = freezed,
   }) {
     return _then(_ArtistList(
-      artists: artists == freezed ? _value.artists : artists as List<Artist>,
+      artists: artists == freezed
+          ? _value.artists
+          : artists // ignore: cast_nullable_to_non_nullable
+              as List<Artist>,
     ));
   }
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$_ArtistList extends _ArtistList {
-  const _$_ArtistList({@ArtistsConverter() this.artists = const <Artist>[]})
-      : assert(artists != null),
+  const _$_ArtistList(
+      {@ArtistsConverter() final List<Artist> artists = const <Artist>[]})
+      : _artists = artists,
         super._();
 
   factory _$_ArtistList.fromJson(Map<String, dynamic> json) =>
-      _$_$_ArtistListFromJson(json);
+      _$$_ArtistListFromJson(json);
 
-  @JsonKey(defaultValue: const <Artist>[])
-  @override
   @ArtistsConverter()
-  final List<Artist> artists;
+  final List<Artist> _artists;
+  @override
+  @JsonKey()
+  @ArtistsConverter()
+  List<Artist> get artists {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_artists);
+  }
 
   @override
   String toString() {
@@ -122,36 +119,40 @@ class _$_ArtistList extends _ArtistList {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ArtistList &&
-            (identical(other.artists, artists) ||
-                const DeepCollectionEquality().equals(other.artists, artists)));
+        (other.runtimeType == runtimeType &&
+            other is _ArtistList &&
+            const DeepCollectionEquality().equals(other.artists, artists));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(artists);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(artists));
 
+  @JsonKey(ignore: true)
   @override
   _$ArtistListCopyWith<_ArtistList> get copyWith =>
       __$ArtistListCopyWithImpl<_ArtistList>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_ArtistListToJson(this);
+    return _$$_ArtistListToJson(this);
   }
 }
 
 abstract class _ArtistList extends ArtistList {
-  const _ArtistList._() : super._();
-  const factory _ArtistList({@ArtistsConverter() List<Artist> artists}) =
+  const factory _ArtistList({@ArtistsConverter() final List<Artist> artists}) =
       _$_ArtistList;
+  const _ArtistList._() : super._();
 
   factory _ArtistList.fromJson(Map<String, dynamic> json) =
       _$_ArtistList.fromJson;
 
   @override
   @ArtistsConverter()
-  List<Artist> get artists;
+  List<Artist> get artists => throw _privateConstructorUsedError;
   @override
-  _$ArtistListCopyWith<_ArtistList> get copyWith;
+  @JsonKey(ignore: true)
+  _$ArtistListCopyWith<_ArtistList> get copyWith =>
+      throw _privateConstructorUsedError;
 }

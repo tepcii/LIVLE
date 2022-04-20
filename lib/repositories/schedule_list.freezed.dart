@@ -1,5 +1,7 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'schedule_list.dart';
 
@@ -8,39 +10,23 @@ part of 'schedule_list.dart';
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
+
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+
 ScheduleList _$ScheduleListFromJson(Map<String, dynamic> json) {
   return _ScheduleList.fromJson(json);
 }
 
 /// @nodoc
-class _$ScheduleListTearOff {
-  const _$ScheduleListTearOff();
-
-// ignore: unused_element
-  _ScheduleList call(
-      {@SchedulesConverter() List<Schedule> schedules = const <Schedule>[]}) {
-    return _ScheduleList(
-      schedules: schedules,
-    );
-  }
-
-// ignore: unused_element
-  ScheduleList fromJson(Map<String, Object> json) {
-    return ScheduleList.fromJson(json);
-  }
-}
-
-/// @nodoc
-// ignore: unused_element
-const $ScheduleList = _$ScheduleListTearOff();
-
-/// @nodoc
 mixin _$ScheduleList {
   @SchedulesConverter()
-  List<Schedule> get schedules;
+  List<Schedule> get schedules => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson();
-  $ScheduleListCopyWith<ScheduleList> get copyWith;
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $ScheduleListCopyWith<ScheduleList> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -61,11 +47,13 @@ class _$ScheduleListCopyWithImpl<$Res> implements $ScheduleListCopyWith<$Res> {
 
   @override
   $Res call({
-    Object schedules = freezed,
+    Object? schedules = freezed,
   }) {
     return _then(_value.copyWith(
-      schedules:
-          schedules == freezed ? _value.schedules : schedules as List<Schedule>,
+      schedules: schedules == freezed
+          ? _value.schedules
+          : schedules // ignore: cast_nullable_to_non_nullable
+              as List<Schedule>,
     ));
   }
 }
@@ -92,30 +80,37 @@ class __$ScheduleListCopyWithImpl<$Res> extends _$ScheduleListCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object schedules = freezed,
+    Object? schedules = freezed,
   }) {
     return _then(_ScheduleList(
-      schedules:
-          schedules == freezed ? _value.schedules : schedules as List<Schedule>,
+      schedules: schedules == freezed
+          ? _value.schedules
+          : schedules // ignore: cast_nullable_to_non_nullable
+              as List<Schedule>,
     ));
   }
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$_ScheduleList implements _ScheduleList {
   const _$_ScheduleList(
-      {@SchedulesConverter() this.schedules = const <Schedule>[]})
-      : assert(schedules != null);
+      {@SchedulesConverter()
+          final List<Schedule> schedules = const <Schedule>[]})
+      : _schedules = schedules;
 
   factory _$_ScheduleList.fromJson(Map<String, dynamic> json) =>
-      _$_$_ScheduleListFromJson(json);
+      _$$_ScheduleListFromJson(json);
 
-  @JsonKey(defaultValue: const <Schedule>[])
-  @override
   @SchedulesConverter()
-  final List<Schedule> schedules;
+  final List<Schedule> _schedules;
+  @override
+  @JsonKey()
+  @SchedulesConverter()
+  List<Schedule> get schedules {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_schedules);
+  }
 
   @override
   String toString() {
@@ -125,36 +120,39 @@ class _$_ScheduleList implements _ScheduleList {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ScheduleList &&
-            (identical(other.schedules, schedules) ||
-                const DeepCollectionEquality()
-                    .equals(other.schedules, schedules)));
+        (other.runtimeType == runtimeType &&
+            other is _ScheduleList &&
+            const DeepCollectionEquality().equals(other.schedules, schedules));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(schedules);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(schedules));
 
+  @JsonKey(ignore: true)
   @override
   _$ScheduleListCopyWith<_ScheduleList> get copyWith =>
       __$ScheduleListCopyWithImpl<_ScheduleList>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_ScheduleListToJson(this);
+    return _$$_ScheduleListToJson(this);
   }
 }
 
 abstract class _ScheduleList implements ScheduleList {
   const factory _ScheduleList(
-      {@SchedulesConverter() List<Schedule> schedules}) = _$_ScheduleList;
+      {@SchedulesConverter() final List<Schedule> schedules}) = _$_ScheduleList;
 
   factory _ScheduleList.fromJson(Map<String, dynamic> json) =
       _$_ScheduleList.fromJson;
 
   @override
   @SchedulesConverter()
-  List<Schedule> get schedules;
+  List<Schedule> get schedules => throw _privateConstructorUsedError;
   @override
-  _$ScheduleListCopyWith<_ScheduleList> get copyWith;
+  @JsonKey(ignore: true)
+  _$ScheduleListCopyWith<_ScheduleList> get copyWith =>
+      throw _privateConstructorUsedError;
 }

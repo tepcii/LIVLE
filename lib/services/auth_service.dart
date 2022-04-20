@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_twitter/flutter_twitter.dart';
+// import 'package:flutter_twitter/flutter_twitter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:livle/providers/view_model/user_register.dart';
+import 'package:twitter_login/entity/auth_result.dart';
+import 'package:twitter_login/twitter_login.dart';
 
 import '../config/secret.dart' as secret;
 
@@ -86,31 +88,34 @@ class AuthService {
   // Twitter APIを通じてログイン情報を取得
   Future<User?> signInWithTwitter() async {
     final TwitterLogin twitterLogin = TwitterLogin(
-      consumerKey: secret.TWITTER_CUNSUMER_KEY,
-      consumerSecret: secret.TWITTER_SECRET,
+      apiKey: secret.TWITTER_CUNSUMER_KEY,
+      apiSecretKey: secret.TWITTER_SECRET,
+      redirectURI: '',
     );
 
     // Twitter認証の許可画面が出現
-    final TwitterLoginResult result = await twitterLogin.authorize();
+    final AuthResult authResult = await twitterLogin.login();
 
-    if (result.session == null) {
+    if (authResult.status == null) {
       return null;
     }
 
-    // Firebaseのユーザー情報に
-    final AuthCredential credential = TwitterAuthProvider.credential(
-      accessToken: result.session.token,
-      secret: result.session.secret,
-    );
+    if (authResult.status == TwitterLoginStatus.loggedIn) {
+      // Firebaseのユーザー情報に
+      final AuthCredential credential = TwitterAuthProvider.credential(
+        accessToken: authResult.authToken ?? '',
+        secret: authResult.authTokenSecret ?? '',
+      );
 
-    final User? user = await fetchCurrentUserWithCredential(credential);
-    final User? currentUser = _firebaseAuth.currentUser;
+      final User? user = await fetchCurrentUserWithCredential(credential);
+      final User? currentUser = _firebaseAuth.currentUser;
+      assert(user?.uid == currentUser?.uid);
 
-    assert(!(user?.isAnonymous ?? false));
-    assert(await user?.getIdToken() != null);
-    assert(user?.uid == currentUser?.uid);
-
-    return user;
+      return user;
+    }
+    // assert(!(user?.isAnonymous ?? false));
+    // assert(await user?.getIdToken() != null);
+    // assert(user?.uid == currentUser?.uid);
   }
 
   // Googleアカウントでログイン
