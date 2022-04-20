@@ -1,14 +1,10 @@
-import 'dart:ui';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:livle/services/auth_service.dart';
 import 'package:livle/config/config.dart';
+import 'package:livle/services/auth_service.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class LoginSelect extends StatelessWidget {
@@ -53,9 +49,9 @@ class Logo extends StatefulWidget {
 }
 
 class _LogoState extends State<Logo> with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<double> animation;
-  CurvedAnimation _curvedAnimation;
+  late AnimationController _controller;
+  late Animation<double> animation;
+  late CurvedAnimation _curvedAnimation;
   final Tween<double> tween = Tween<double>(begin: 0.0, end: 1.0);
 
   @override
@@ -74,10 +70,7 @@ class _LogoState extends State<Logo> with SingleTickerProviderStateMixin {
   @override
   void dispose() {
     // アニメーションコントローラーの破棄
-    if (_controller != null) {
-      _controller.dispose();
-      _controller = null;
-    }
+    _controller.dispose();
     super.dispose();
   }
 
@@ -114,7 +107,7 @@ class CardSlider extends StatefulWidget {
 }
 
 class _CardSliderState extends State<CardSlider> {
-  PageController _pageController;
+  late PageController _pageController;
 
   @override
   void initState() {
@@ -171,7 +164,7 @@ class _SignInButtonsState extends State<SignInButtons> with TickerProviderStateM
   final RoundedLoadingButtonController _appleBtnController = RoundedLoadingButtonController();
 
   // すぐに別のボタンを押したときに処理が実行されないようにするためのフラグ
-  bool send;
+  late bool send;
 
   @override
   void initState() {
@@ -327,7 +320,7 @@ class _SignInButtonsState extends State<SignInButtons> with TickerProviderStateM
       return;
     }
     startSend();
-    final User user = await authService.signInWithTwitter();
+    final User? user = await authService.signInWithTwitter();
     if (user != null) {
       print('ログイン成功:' + user.uid);
       // await _twitterBtnController.success();
@@ -346,11 +339,11 @@ class _SignInButtonsState extends State<SignInButtons> with TickerProviderStateM
       return;
     }
     startSend();
-    final User user = await authService.signInWithGoogle();
+    final User? user = await authService.signInWithGoogle();
     if (user != null) {
       print('ログイン成功:' + user.uid);
       // thenLogin(context, LoginLogic.Google);
-      await _googleBtnController.success();
+      _googleBtnController.success();
     } else {
       print('ログイン失敗');
       showLoginFailedDialog('ネットワーク接続状況を確認してください。');
@@ -365,11 +358,11 @@ class _SignInButtonsState extends State<SignInButtons> with TickerProviderStateM
       return;
     }
     startSend();
-    final User user = await authService.signInWithApple();
+    final User? user = await authService.signInWithApple();
     if (user != null) {
       print('ログイン成功:' + user.uid);
       // thenLogin(context, LoginLogic.Apple);
-      await _appleBtnController.success();
+      _appleBtnController.success();
     } else {
       print('ログイン失敗');
       showLoginFailedDialog('ネットワーク接続状況を確認してください。');
@@ -402,17 +395,9 @@ class _MailPassFormState extends State<MailPassForm> {
   final RoundedLoadingButtonController _loginButtonController = RoundedLoadingButtonController();
   final AuthService authService = AuthService();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String _mail;
-  String _pass;
-  bool _showPassword;
-
-  @override
-  void initState() {
-    super.initState();
-    _mail = '';
-    _pass = '';
-    _showPassword = false;
-  }
+  String _mail = '';
+  String _pass = '';
+  bool _showPassword = false;
 
   void _handleEmail(String value) {
     setState(() {
@@ -466,7 +451,7 @@ class _MailPassFormState extends State<MailPassForm> {
                         hintText: 'sample@example.com',
                         border: OutlineInputBorder(),
                       ),
-                      validator: (String value) => !EmailValidator.validate(value) ? '正しいメールアドレスを入力してください。' : null,
+                      validator: (String? value) => !EmailValidator.validate(value ?? '') ? '正しいメールアドレスを入力してください。' : null,
                       onChanged: _handleEmail,
                     ),
                     TextFormField(
@@ -494,7 +479,7 @@ class _MailPassFormState extends State<MailPassForm> {
                           },
                         ),
                       ),
-                      validator: (String value) => value.length < 6 ? '6文字以上に設定してください。' : null,
+                      validator: (String? value) => value!.length < 6 ? '6文字以上に設定してください。' : null,
                       onChanged: _handlePass,
                     ),
                     RoundedLoadingButton(
@@ -514,7 +499,7 @@ class _MailPassFormState extends State<MailPassForm> {
   }
 
   Future<void> _loginWithEmail() async {
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState?.validate() ?? false) {
       final bool result = await authService.signUpWithEmail(_mail, _pass, context);
       _loginButtonController.reset();
       if (result) {

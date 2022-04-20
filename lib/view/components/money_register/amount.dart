@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:livle/config/config.dart';
 import 'package:livle/providers/view_model/money_register.dart';
 import 'package:livle/services/input_validator.dart';
 
-class MoneyRegisterAmountInput extends ConsumerWidget {
-  const MoneyRegisterAmountInput({Key key}) : super(key: key);
+class MoneyRegisterAmountInput extends HookConsumerWidget {
+  const MoneyRegisterAmountInput({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final MoneyRegisterViewModel _moneyRegisterViewModel = watch(moneyRegisterViewModelNotifierProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final MoneyRegisterViewModel _moneyRegisterViewModel = ref.watch(moneyRegisterViewModelNotifierProvider);
     return TextFormField(
       cursorColor: Colors.black,
       autovalidateMode: AutovalidateMode.always,
@@ -59,7 +59,7 @@ class MoneyRegisterAmountInput extends ConsumerWidget {
           ),
         ),
       ),
-      validator: (String value) => OriginValidators.moneyAmount(value),
+      validator: (String? value) => OriginValidators.moneyAmount(value ?? ''),
       onChanged: (String value) => _moneyRegisterViewModel.amount = value,
     );
   }

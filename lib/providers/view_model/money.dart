@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/all.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:livle/repositories/artist.dart';
 import 'package:livle/repositories/artist_list.dart';
@@ -10,7 +10,7 @@ import 'package:livle/repositories/money.dart';
 import 'package:livle/repositories/money_list.dart';
 
 final ChangeNotifierProvider<MoneyViewModel> moneyViewModelNotifierProvider = ChangeNotifierProvider<MoneyViewModel>(
-  (ProviderReference ref) => MoneyViewModel(
+  (ChangeNotifierProviderRef<MoneyViewModel> ref) => MoneyViewModel(
     moneyRepository: ref.watch(moneyRepositoryProvider),
     artistRepository: ref.watch(artistsRepositoryProvider),
   ),
@@ -18,8 +18,8 @@ final ChangeNotifierProvider<MoneyViewModel> moneyViewModelNotifierProvider = Ch
 
 class MoneyViewModel extends ChangeNotifier {
   MoneyViewModel({
-    @required MoneyRepository moneyRepository,
-    @required ArtistRepository artistRepository,
+    required MoneyRepository moneyRepository,
+    required ArtistRepository artistRepository,
   })  : _moneyRepository = moneyRepository,
         _artistRepository = artistRepository;
 
@@ -29,7 +29,7 @@ class MoneyViewModel extends ChangeNotifier {
   MoneyRepository get moneyRepository => _moneyRepository;
   ArtistRepository get artistRepository => _artistRepository;
 
-  int _pieChartTouchedIndex;
+  late int _pieChartTouchedIndex;
 
   int get pieChartTouchedIndex => _pieChartTouchedIndex;
   set pieChartTouchedIndex(int value) {
@@ -37,11 +37,11 @@ class MoneyViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void pieChartTouchCallBack(PieTouchResponse pieTouchResponse) {
-    if (pieTouchResponse.touchInput is FlLongPressEnd || pieTouchResponse.touchInput is FlPanEnd) {
+  void pieChartTouchCallBack(FlTouchEvent event, PieTouchResponse? res) {
+    if (!event.isInterestedForInteractions || res == null || res.touchedSection == null) {
       _pieChartTouchedIndex = -1;
     } else {
-      _pieChartTouchedIndex = pieTouchResponse.touchedSectionIndex;
+      _pieChartTouchedIndex = res.touchedSection!.touchedSectionIndex;
     }
     notifyListeners();
   }

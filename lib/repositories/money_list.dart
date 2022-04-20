@@ -11,8 +11,8 @@ part 'money_list.g.dart';
 
 class MoneyRepository extends ChangeNotifier {
   MoneyRepository({
-    @required this.source,
-    @required MoneyList moneyList,
+    required this.source,
+    required MoneyList moneyList,
   }) : _moneyList = moneyList;
 
   IMoneyDataSource source;
@@ -35,7 +35,7 @@ abstract class MoneyList with _$MoneyList {
 }
 
 final Provider<MoneyRepository> moneyRepositoryProvider = Provider<MoneyRepository>(
-  (ProviderReference ref) => MoneyRepository(
+  (ProviderRef<MoneyRepository> ref) => MoneyRepository(
     source: MoneyDataSource(),
     moneyList: const MoneyList(),
   ),
@@ -46,9 +46,6 @@ class SpendingsConverter implements JsonConverter<List<Money>, List<dynamic>> {
 
   @override
   List<Money> fromJson(List<dynamic> json) {
-    if (json == null) {
-      return null;
-    }
     return json
         .map<Money>((dynamic e) => Money(
               id: e['id'] as String,

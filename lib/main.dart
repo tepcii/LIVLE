@@ -1,14 +1,13 @@
 import 'dart:io';
 
-import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:livle/config/config.dart';
-import 'package:livle/view/pages/register_money.dart';
-import 'package:livle/view/components/tutorial/tutorial_slider_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:livle/config/config.dart';
 import 'package:livle/config/secret.dart';
+import 'package:livle/view/components/tutorial/tutorial_slider_view.dart';
+import 'package:livle/view/pages/register_money.dart';
 import 'package:livle/view/user_checker.dart';
 
 import 'view/auth_widget.dart';
@@ -28,7 +27,7 @@ Future<void> main() async {
       ),
     );
   }
-  final bool _appleSignInIsAvailable = await AppleSignIn.isAvailable();
+  const bool _appleSignInIsAvailable = false; //await AppleSignIn.isAvailable();
 
 //  debugPaintSizeEnabled = true;
   SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.portraitUp]).then((_) {
@@ -44,11 +43,11 @@ Future<void> main() async {
           ),
           home: AuthWidget(
             signedInBuilder: (BuildContext context) => UserCheckerWidget(),
-            nonSignedInBuilder: (BuildContext context) => LoginSelect(_appleSignInIsAvailable),
+            nonSignedInBuilder: (BuildContext context) => const LoginSelect(_appleSignInIsAvailable),
           ),
           routes: <String, WidgetBuilder>{
             '/home': (BuildContext context) => Home(),
-            '/loginSelect': (BuildContext context) => LoginSelect(_appleSignInIsAvailable),
+            '/loginSelect': (BuildContext context) => const LoginSelect(_appleSignInIsAvailable),
             '/tutorial': (BuildContext context) => const TutorialSliderView(),
             '/register_money': (BuildContext context) => const RegisterMoney(),
           },

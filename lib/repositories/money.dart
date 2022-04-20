@@ -2,12 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Money {
   Money({
-    this.id,
-    this.amount,
-    this.title,
-    this.date,
-    this.memo,
-    this.artistId,
+    required this.id,
+    required this.amount,
+    required this.title,
+    required this.date,
+    required this.memo,
+    required this.artistId,
   });
 
   String id;

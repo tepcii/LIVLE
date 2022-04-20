@@ -1,12 +1,10 @@
 import 'dart:async';
 
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_twitter/flutter_twitter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:livle/providers/view_model/user_register.dart';
 
 import '../config/secret.dart' as secret;
@@ -31,41 +29,40 @@ class AuthService {
       );
       await signInWithEmail(email, password);
     } catch (e) {
-      print(e.code);
-      switch (e.code.toString()) {
-        // ユーザー作成時にメールアドレス使用済みエラーが出る場合、そのままログイン
-        case 'ERROR_EMAIL_ALREADY_IN_USE':
-          final bool _signInResult = await signInWithEmail(email, password);
-          if (_signInResult) {
-            return true;
-          }
-          break;
+      //   switch (e.code.toString()) {
+      //     // ユーザー作成時にメールアドレス使用済みエラーが出る場合、そのままログイン
+      //     case 'ERROR_EMAIL_ALREADY_IN_USE':
+      //       final bool _signInResult = await signInWithEmail(email, password);
+      //       if (_signInResult) {
+      //         return true;
+      //       }
+      //       break;
 
-        // パスワードが違うエラー
-        case 'ERROR_WRONG_PASSWORD':
-          AwesomeDialog(
-            context: context,
-            headerAnimationLoop: false,
-            dialogType: DialogType.ERROR,
-            animType: AnimType.SCALE,
-            title: 'ログイン失敗',
-            desc: 'パスワードが間違っています。',
-            btnOkOnPress: () {},
-          ).show();
-          break;
+      //     // パスワードが違うエラー
+      //     case 'ERROR_WRONG_PASSWORD':
+      //       AwesomeDialog(
+      //         context: context,
+      //         headerAnimationLoop: false,
+      //         dialogType: DialogType.ERROR,
+      //         animType: AnimType.SCALE,
+      //         title: 'ログイン失敗',
+      //         desc: 'パスワードが間違っています。',
+      //         btnOkOnPress: () {},
+      //       ).show();
+      //       break;
 
-        default:
-          AwesomeDialog(
-            context: context,
-            headerAnimationLoop: false,
-            dialogType: DialogType.ERROR,
-            animType: AnimType.SCALE,
-            title: 'ログイン失敗',
-            desc: '何らかの問題でログインに失敗しました。',
-            btnOkOnPress: () {},
-          ).show();
-          break;
-      }
+      //     default:
+      //       AwesomeDialog(
+      //         context: context,
+      //         headerAnimationLoop: false,
+      //         dialogType: DialogType.ERROR,
+      //         animType: AnimType.SCALE,
+      //         title: 'ログイン失敗',
+      //         desc: '何らかの問題でログインに失敗しました。',
+      //         btnOkOnPress: () {},
+      //       ).show();
+      //       break;
+      //   }
       return false;
     }
 
@@ -87,7 +84,7 @@ class AuthService {
   }
 
   // Twitter APIを通じてログイン情報を取得
-  Future<User> signInWithTwitter() async {
+  Future<User?> signInWithTwitter() async {
     final TwitterLogin twitterLogin = TwitterLogin(
       consumerKey: secret.TWITTER_CUNSUMER_KEY,
       consumerSecret: secret.TWITTER_SECRET,
@@ -106,20 +103,20 @@ class AuthService {
       secret: result.session.secret,
     );
 
-    final User user = await fetchCurrentUserWithCredential(credential);
-    final User currentUser = _firebaseAuth.currentUser;
+    final User? user = await fetchCurrentUserWithCredential(credential);
+    final User? currentUser = _firebaseAuth.currentUser;
 
-    assert(!user.isAnonymous);
-    assert(await user.getIdToken() != null);
-    assert(user.uid == currentUser.uid);
+    assert(!(user?.isAnonymous ?? false));
+    assert(await user?.getIdToken() != null);
+    assert(user?.uid == currentUser?.uid);
 
     return user;
   }
 
   // Googleアカウントでログイン
-  Future<User> signInWithGoogle() async {
+  Future<User?> signInWithGoogle() async {
     final GoogleSignIn _googleSignIn = GoogleSignIn();
-    GoogleSignInAccount googleCurrentUser = _googleSignIn.currentUser;
+    GoogleSignInAccount? googleCurrentUser = _googleSignIn.currentUser;
     googleCurrentUser ??= await _googleSignIn.signInSilently(suppressErrors: true);
     if (googleCurrentUser == null) {
       await _googleSignIn.signIn();
@@ -132,7 +129,7 @@ class AuthService {
         idToken: googleAuth.idToken,
         accessToken: googleAuth.accessToken,
       );
-      final User user = await fetchCurrentUserWithCredential(credential);
+      final User? user = await fetchCurrentUserWithCredential(credential);
       return user;
     } else {
       return null;
@@ -140,50 +137,50 @@ class AuthService {
   }
 
   // Appleアカウントでログイン
-  Future<User> signInWithApple() async {
-    // 証明書をリクエストして取得
-    final AuthorizationResult appleResult = await AppleSignIn.performRequests(<AppleIdRequest>[
-      const AppleIdRequest(requestedScopes: <Scope>[Scope.email, Scope.fullName])
-    ]);
+  Future<User?> signInWithApple() async {
+    // // 証明書をリクエストして取得
+    // final AuthorizationResult appleResult = await AppleSignIn.performRequests(<AppleIdRequest>[
+    //   const AppleIdRequest(requestedScopes: <Scope>[Scope.email, Scope.fullName])
+    // ]);
 
-    // TODO(Tenma): appleResultがerrorしか返ってこない
+    // // TODO(Tenma): appleResultがerrorしか返ってこない
 
-    print(appleResult.status);
-    print(appleResult.credential);
-    print(appleResult.error);
+    // print(appleResult.status);
+    // print(appleResult.credential);
+    // print(appleResult.error);
 
-    switch (appleResult.status) {
-      case AuthorizationStatus.authorized:
-        final AuthCredential credential = OAuthProvider('apple.com').credential(
-          accessToken: String.fromCharCodes(appleResult.credential.authorizationCode),
-          idToken: String.fromCharCodes(appleResult.credential.identityToken),
-        );
-        return await fetchCurrentUserWithCredential(credential);
+    // switch (appleResult.status) {
+    //   case AuthorizationStatus.authorized:
+    //     final AuthCredential credential = OAuthProvider('apple.com').credential(
+    //       accessToken: String.fromCharCodes(appleResult.credential.authorizationCode),
+    //       idToken: String.fromCharCodes(appleResult.credential.identityToken),
+    //     );
+    //     return await fetchCurrentUserWithCredential(credential);
 
-      case AuthorizationStatus.error:
-      case AuthorizationStatus.cancelled:
-      default:
-        return null;
-    }
+    //   case AuthorizationStatus.error:
+    //   case AuthorizationStatus.cancelled:
+    //   default:
+    //     return null;
+    // }
   }
 
   // Firebaseからカレントユーザーを取得
-  Future<User> fetchCurrentUserWithCredential(AuthCredential credential) async {
+  Future<User?> fetchCurrentUserWithCredential(AuthCredential credential) async {
     return (await _firebaseAuth.signInWithCredential(credential)).user;
   }
 
   // Firebaseからカレントユーザーを取得
-  User fetchCurrentUser() {
+  User? fetchCurrentUser() {
     return _firebaseAuth.currentUser;
   }
 
   // カレントユーザーのユーザー情報をCloud Firestoreから取得
   Future<bool> fetchUserInfo(UserRegisterViewModel userState) async {
-    final User currentUser = _firebaseAuth.currentUser;
+    final User? currentUser = _firebaseAuth.currentUser;
     // final int _index = Platform.isIOS ? 0 : 1;
     // final String providerId = currentUser.providerData[_index].providerId;
-    Map<String, dynamic> userDoc;
-    bool exists;
+    Map<String, dynamic>? userDoc;
+    bool exists = false;
 
     // if (providerId == 'password') {
     //   await FirebaseFirestore.instance.collection('users').where('email_uid', isEqualTo: currentUser.uid).get().then((QuerySnapshot value) {
@@ -203,10 +200,10 @@ class AuthService {
     //   });
     // }
 
-    await FirebaseFirestore.instance.collection('users').doc(currentUser.uid).get().then((DocumentSnapshot value) {
+    await FirebaseFirestore.instance.collection('users').doc(currentUser?.uid).get().then((DocumentSnapshot<Map<String, dynamic>> value) {
       if (value.exists) {
         userDoc = value.data();
-        userState.setUserInfoToLocalState(userDoc);
+        userState.setUserInfoToLocalState(userDoc ?? <String, dynamic>{});
         exists = true;
       } else {
         exists = false;

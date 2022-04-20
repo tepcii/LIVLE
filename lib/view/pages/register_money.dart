@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/all.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:livle/providers/view_model/money_register.dart';
 import 'package:livle/view/components/money_register/amount.dart';
 import 'package:livle/view/components/money_register/artist.dart';
@@ -8,12 +8,12 @@ import 'package:livle/view/components/money_register/memo.dart';
 import 'package:livle/view/components/money_register/register_button.dart';
 import 'package:livle/view/components/money_register/title.dart';
 
-class RegisterMoney extends ConsumerWidget {
-  const RegisterMoney({Key key}) : super(key: key);
+class RegisterMoney extends HookConsumerWidget {
+  const RegisterMoney({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final MoneyRegisterViewModel _moneyRegisterViewModel = watch(moneyRegisterViewModelNotifierProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final MoneyRegisterViewModel _moneyRegisterViewModel = ref.watch(moneyRegisterViewModelNotifierProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('お金登録'),

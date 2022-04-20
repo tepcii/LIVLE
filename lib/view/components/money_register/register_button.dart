@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:livle/config/config.dart';
 import 'package:livle/providers/view_model/money_register.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
-class MoneyRegisterButton extends ConsumerWidget {
-  const MoneyRegisterButton({Key key}) : super(key: key);
+class MoneyRegisterButton extends HookConsumerWidget {
+  const MoneyRegisterButton({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final MoneyRegisterViewModel _moneyRegisterViewModel = watch(moneyRegisterViewModelNotifierProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final MoneyRegisterViewModel _moneyRegisterViewModel = ref.watch(moneyRegisterViewModelNotifierProvider);
     return RoundedLoadingButton(
       controller: _moneyRegisterViewModel.registerBtnController,
       child: Container(

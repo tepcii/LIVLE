@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:livle/repositories/user.dart';
 import 'package:livle/services/auth_service.dart';
 import 'package:livle/services/storage_service.dart';
@@ -9,7 +8,7 @@ import 'package:livle/source/interfaces/user.dart';
 
 class UserDataSource implements IUserDataSource {
   UserDataSource({
-    @required this.storage,
+    required this.storage,
   });
   final FirebaseStorage storage;
 
@@ -18,7 +17,7 @@ class UserDataSource implements IUserDataSource {
     // ユーザー登録処理
     if (user.pickedImage) {
       // 画像が選択されていればストレージに登録
-      final TaskSnapshot snapshot = await StorageService.updateUserIcon(storage, user.iconImagePath);
+      final TaskSnapshot snapshot = await updateUserIcon(storage, user.iconImagePath);
       if (snapshot.state == TaskState.success) {
         // print(await snapshot.ref.getDownloadURL());
       } else {
@@ -28,8 +27,8 @@ class UserDataSource implements IUserDataSource {
     }
 
     final AuthService _auth = AuthService();
-    final User firebaseUser = _auth.fetchCurrentUser();
-    final String uid = firebaseUser.uid;
+    final User? firebaseUser = _auth.fetchCurrentUser();
+    final String uid = firebaseUser?.uid ?? '';
     await FirebaseFirestore.instance.collection('users').doc(uid).set(<String, dynamic>{
       'display_id': user.id,
       'isBanned': false,

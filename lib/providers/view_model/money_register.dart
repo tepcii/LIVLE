@@ -10,7 +10,7 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:uuid/uuid.dart';
 
 final ChangeNotifierProvider<MoneyRegisterViewModel> moneyRegisterViewModelNotifierProvider = ChangeNotifierProvider<MoneyRegisterViewModel>(
-  (ProviderReference ref) => MoneyRegisterViewModel(
+  (ChangeNotifierProviderRef<MoneyRegisterViewModel> ref) => MoneyRegisterViewModel(
     artistRepository: ref.watch(artistsRepositoryProvider),
     moneyRepository: ref.watch(moneyRepositoryProvider),
   ),
@@ -18,8 +18,8 @@ final ChangeNotifierProvider<MoneyRegisterViewModel> moneyRegisterViewModelNotif
 
 class MoneyRegisterViewModel extends ChangeNotifier {
   MoneyRegisterViewModel({
-    @required ArtistRepository artistRepository,
-    @required MoneyRepository moneyRepository,
+    required ArtistRepository artistRepository,
+    required MoneyRepository moneyRepository,
   })  : _artistRepository = artistRepository,
         _moneyRepository = moneyRepository;
 
@@ -32,13 +32,13 @@ class MoneyRegisterViewModel extends ChangeNotifier {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController dateController = TextEditingController();
   final RoundedLoadingButtonController registerBtnController = RoundedLoadingButtonController();
-  final Uuid _uuid = Uuid();
+  final Uuid _uuid = const Uuid();
 
   String _title = '';
   String _amount = '';
-  Timestamp _date;
+  late Timestamp _date;
   String _memo = '';
-  String _artistId;
+  late String _artistId;
 
   List<Artist> get artistList {
     return _artistRepository.artistList.artists;
@@ -66,7 +66,7 @@ class MoneyRegisterViewModel extends ChangeNotifier {
   }
 
   Future<void> onPressedRegisterButton(BuildContext context) async {
-    if (formKey.currentState.validate()) {
+    if (formKey.currentState?.validate() ?? false) {
       await _moneyRepository.source
           .add(
         Money(

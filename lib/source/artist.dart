@@ -6,11 +6,11 @@ import 'package:livle/source/interfaces/artist.dart';
 
 class ArtistDataSource implements IArtistDataSource {
   @override
-  Future<Map<String, dynamic>> fetch() async {
+  Future<Map<String, dynamic>?> fetch() async {
     final AuthService _authService = AuthService();
-    Map<String, dynamic> data;
-    final String _uid = _authService.fetchCurrentUser().uid;
-    await FirebaseFirestore.instance.collection('artists').doc(_uid).get().then((DocumentSnapshot value) {
+    Map<String, dynamic>? data;
+    final String _uid = _authService.fetchCurrentUser()?.uid ?? '';
+    await FirebaseFirestore.instance.collection('artists').doc(_uid).get().then((DocumentSnapshot<Map<String, dynamic>?> value) {
       if (value.exists) {
         data = value.data();
       }
@@ -21,8 +21,8 @@ class ArtistDataSource implements IArtistDataSource {
   @override
   Future<bool> init() async {
     final AuthService _auth = AuthService();
-    final User firebaseUser = _auth.fetchCurrentUser();
-    final String uid = firebaseUser.uid;
+    final User? firebaseUser = _auth.fetchCurrentUser();
+    final String uid = firebaseUser?.uid ?? '';
     await FirebaseFirestore.instance.collection('artists').doc(uid).set(<String, dynamic>{
       'artists': <Map<String, dynamic>>[],
     });

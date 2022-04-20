@@ -11,8 +11,8 @@ part 'schedule_list.g.dart';
 
 class ScheduleRepository extends ChangeNotifier {
   ScheduleRepository({
-    @required this.source,
-    @required ScheduleList scheduleList,
+    required this.source,
+    required ScheduleList scheduleList,
   }) : _scheduleList = scheduleList;
 
   IScheduleDataSource source;
@@ -35,7 +35,7 @@ abstract class ScheduleList with _$ScheduleList {
 }
 
 final Provider<ScheduleRepository> scheduleRepositoryProvider = Provider<ScheduleRepository>(
-  (ProviderReference ref) => ScheduleRepository(
+  (ProviderRef<ScheduleRepository> ref) => ScheduleRepository(
     source: ScheduleDataSource(),
     scheduleList: const ScheduleList(),
   ),
@@ -46,9 +46,6 @@ class SchedulesConverter implements JsonConverter<List<Schedule>, List<dynamic>>
 
   @override
   List<Schedule> fromJson(List<dynamic> json) {
-    if (json == null) {
-      return null;
-    }
     return json
         .map<Schedule>((dynamic e) => Schedule(
               id: e['id'] as String,

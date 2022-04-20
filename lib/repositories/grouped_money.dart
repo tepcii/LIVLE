@@ -2,8 +2,8 @@ import 'package:livle/repositories/artist.dart';
 
 class GroupedMoney {
   GroupedMoney({
-    this.artist,
-    this.totalAmount,
+    required this.artist,
+    required this.totalAmount,
   });
 
   Artist artist;

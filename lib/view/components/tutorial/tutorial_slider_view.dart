@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_overboard/flutter_overboard.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:livle/config/config.dart';
 import 'package:livle/providers/view_model/user_register.dart';
 import 'package:livle/view/components/tutorial/user_info_form.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class TutorialSliderView extends StatefulWidget {
-  const TutorialSliderView({Key key}) : super(key: key);
+  const TutorialSliderView({Key? key}) : super(key: key);
 
   @override
   _TutorialSliderViewState createState() => _TutorialSliderViewState();
@@ -99,10 +99,10 @@ class _DescriptionPage extends StatelessWidget {
   }
 }
 
-class _UserInfoInputPage extends ConsumerWidget {
+class _UserInfoInputPage extends HookConsumerWidget {
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final UserRegisterViewModel _userRegisterViewModel = watch(userRegisterViewModelNotifierProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final UserRegisterViewModel _userRegisterViewModel = ref.watch(userRegisterViewModelNotifierProvider);
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Form(

@@ -8,8 +8,8 @@ class ScheduleDataSource implements IScheduleDataSource {
   @override
   Future<bool> init() async {
     final AuthService _auth = AuthService();
-    final User firebaseUser = _auth.fetchCurrentUser();
-    final String uid = firebaseUser.uid;
+    final User? firebaseUser = _auth.fetchCurrentUser();
+    final String uid = firebaseUser?.uid ?? '';
     await FirebaseFirestore.instance.collection('schedule').doc(uid).set(<String, dynamic>{
       'schedules': <Map<String, dynamic>>[],
     });

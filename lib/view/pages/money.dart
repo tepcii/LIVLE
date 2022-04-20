@@ -1,38 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/all.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:livle/providers/firestore_providers.dart';
 import 'package:livle/providers/view_model/money.dart';
 import 'package:livle/repositories/artist_list.dart';
 import 'package:livle/repositories/money_list.dart';
 import 'package:livle/view/components/common/loading_indicator.dart';
-import 'package:livle/view/components/money/money_list.dart';
 import 'package:livle/view/components/money/money_tab_bar.dart';
 
-import '../components/money/pie_chart.dart';
-
-class MoneyPage extends ConsumerWidget {
+class MoneyPage extends HookConsumerWidget {
   final Color barColor = Colors.white;
   final Color barBackgroundColor = const Color(0xff72d8bf);
   final double width = 22;
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final MoneyViewModel _moneyViewModel = watch(moneyViewModelNotifierProvider);
-    final AsyncValue<Map<String, dynamic>> _moneyStreamProvider = watch(moneyStreamProvider);
-    final AsyncValue<Map<String, dynamic>> _artistsStreamProvider = watch(artistsStreamProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final MoneyViewModel _moneyViewModel = ref.watch(moneyViewModelNotifierProvider);
+    final AsyncValue<Map<String, dynamic>?> _moneyStreamProvider = ref.watch(moneyStreamProvider);
+    final AsyncValue<Map<String, dynamic>?> _artistsStreamProvider = ref.watch(artistsStreamProvider);
     return _moneyStreamProvider.when(
-      data: (Map<String, dynamic> data) {
-        if (data != null) {
-          _moneyViewModel.moneyRepository.moneyList = MoneyList.fromJson(data);
-        }
+      data: (Map<String, dynamic>? data) {
+        _moneyViewModel.moneyRepository.moneyList = MoneyList.fromJson(data ?? <String, dynamic>{});
         return _artistsStreamProvider.when(
-          data: (Map<String, dynamic> data) {
-            if (data != null) {
-              _moneyViewModel.artistRepository.artistList = ArtistList.fromJson(data);
-            }
+          data: (Map<String, dynamic>? data) {
+            _moneyViewModel.artistRepository.artistList = ArtistList.fromJson(data ?? <String, dynamic>{});
             if (_moneyViewModel.moneyRepository.moneyList.spendings.isNotEmpty) {
-              return MoneyTabBarView();
+              return const MoneyTabBarView();
             } else {
               return Container(
                 child: Center(

@@ -4,8 +4,8 @@ import 'package:livle/repositories/schedule.dart';
 
 class ScheduleListTile extends StatelessWidget {
   const ScheduleListTile({
-    Key key,
-    this.schedule,
+    Key? key,
+    required this.schedule,
   }) : super(key: key);
 
   final Schedule schedule;
@@ -18,7 +18,7 @@ class ScheduleListTile extends StatelessWidget {
           border: Border(
             bottom: BorderSide(
               width: 1.0,
-              color: Colors.grey[200],
+              color: Colors.grey[200] ?? Colors.grey,
             ),
           ),
         ),

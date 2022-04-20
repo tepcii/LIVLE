@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class UserIcon extends StatelessWidget {
-  const UserIcon({this.imagePath});
+  const UserIcon({required this.imagePath});
   final String imagePath;
 
   @override

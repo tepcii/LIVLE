@@ -1,19 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:livle/providers/view_model/money_register.dart';
 import 'package:livle/services/input_validator.dart';
 import 'package:livle/view/components/common/custom_datepicker.dart';
 
-class MoneyRegisterDateInput extends ConsumerWidget {
-  const MoneyRegisterDateInput({Key key}) : super(key: key);
+class MoneyRegisterDateInput extends HookConsumerWidget {
+  const MoneyRegisterDateInput({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final MoneyRegisterViewModel _moneyRegisterViewModel = watch(moneyRegisterViewModelNotifierProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final MoneyRegisterViewModel _moneyRegisterViewModel = ref.watch(moneyRegisterViewModelNotifierProvider);
     return Row(
       children: <Widget>[
         Expanded(
@@ -59,7 +59,7 @@ class MoneyRegisterDateInput extends ConsumerWidget {
                   ),
                 ),
               ),
-              validator: (String value) => OriginValidators.moneyDate(value),
+              validator: (String? value) => OriginValidators.moneyDate(value ?? ''),
               onChanged: (String value) => _moneyRegisterViewModel.title = value,
             ),
           ),
@@ -74,7 +74,7 @@ class MoneyRegisterDateInput extends ConsumerWidget {
                 _moneyRegisterViewModel.date = Timestamp.fromDate(date);
               },
               locale: LocaleType.jp,
-              pickerModel: CustomDatePicker(locale: LocaleType.jp),
+              pickerModel: CustomDatePicker(locale: LocaleType.jp, currentTime: DateTime.now()),
               theme: const DatePickerTheme(
                 cancelStyle: TextStyle(
                   color: Colors.black,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class OriginDrawer extends StatelessWidget {
-  const OriginDrawer({Key key}) : super(key: key);
+  const OriginDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

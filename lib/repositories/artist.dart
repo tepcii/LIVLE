@@ -1,10 +1,10 @@
 class Artist {
   Artist({
-    this.id,
-    this.name,
-    this.description,
-    this.iconImagePath,
-    this.color,
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.iconImagePath,
+    required this.color,
   });
   String id;
   String name;

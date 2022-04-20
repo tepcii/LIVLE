@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/all.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:livle/providers/view_model/money.dart';
 import 'package:livle/repositories/grouped_money.dart';
 import 'package:livle/view/components/money/money_list_tile.dart';
 
-class MoneyListView extends ConsumerWidget {
-  const MoneyListView({Key key}) : super(key: key);
+class MoneyListView extends HookConsumerWidget {
+  const MoneyListView({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final MoneyViewModel moneyViewModel = watch(moneyViewModelNotifierProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final MoneyViewModel moneyViewModel = ref.watch(moneyViewModelNotifierProvider);
     final List<GroupedMoney> groupedMoneyList = moneyViewModel.groupedMoneyByArtistId();
     return Container(
       decoration: const BoxDecoration(

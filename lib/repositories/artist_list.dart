@@ -10,8 +10,8 @@ part 'artist_list.g.dart';
 
 class ArtistRepository extends ChangeNotifier {
   ArtistRepository({
-    @required this.source,
-    @required ArtistList artistList,
+    required this.source,
+    required ArtistList artistList,
   }) : _artistList = artistList;
 
   IArtistDataSource source;
@@ -39,7 +39,7 @@ abstract class ArtistList with _$ArtistList {
 }
 
 final Provider<ArtistRepository> artistsRepositoryProvider = Provider<ArtistRepository>(
-  (ProviderReference ref) => ArtistRepository(
+  (ProviderRef<ArtistRepository> ref) => ArtistRepository(
     source: ArtistDataSource(),
     artistList: const ArtistList(),
   ),
@@ -50,9 +50,6 @@ class ArtistsConverter implements JsonConverter<List<Artist>, List<dynamic>> {
 
   @override
   List<Artist> fromJson(List<dynamic> json) {
-    if (json == null) {
-      return null;
-    }
     return json
         .map<Artist>((dynamic e) => Artist(
               id: e['id'] as String,

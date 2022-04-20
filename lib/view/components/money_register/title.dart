@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:livle/config/config.dart';
 import 'package:livle/providers/view_model/money_register.dart';
 import 'package:livle/services/input_validator.dart';
 
-class MoneyRegisterTitleInput extends ConsumerWidget {
-  const MoneyRegisterTitleInput({Key key}) : super(key: key);
+class MoneyRegisterTitleInput extends HookConsumerWidget {
+  const MoneyRegisterTitleInput({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final MoneyRegisterViewModel _moneyRegisterViewModel = watch(moneyRegisterViewModelNotifierProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final MoneyRegisterViewModel _moneyRegisterViewModel = ref.watch(moneyRegisterViewModelNotifierProvider);
     const String _maxLength = '50';
     return TextFormField(
       cursorColor: Colors.black,
@@ -60,7 +60,7 @@ class MoneyRegisterTitleInput extends ConsumerWidget {
           ),
         ),
       ),
-      validator: (String value) => OriginValidators.moneyTitle(value, _maxLength),
+      validator: (String? value) => OriginValidators.moneyTitle(value ?? '', _maxLength),
       onChanged: (String value) => _moneyRegisterViewModel.title = value,
     );
   }

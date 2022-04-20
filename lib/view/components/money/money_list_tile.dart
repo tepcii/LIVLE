@@ -3,9 +3,9 @@ import 'package:livle/repositories/grouped_money.dart';
 
 class MoneyListTile extends StatelessWidget {
   const MoneyListTile({
-    Key key,
-    this.groupedMoney,
-    this.onTap,
+    Key? key,
+    required this.groupedMoney,
+    required this.onTap,
   }) : super(key: key);
 
   final GroupedMoney groupedMoney;

@@ -3,8 +3,8 @@ import 'package:livle/repositories/artist.dart';
 
 class ArtistGridTile extends StatelessWidget {
   const ArtistGridTile({
-    Key key,
-    this.artist,
+    Key? key,
+    required this.artist,
   }) : super(key: key);
 
   final Artist artist;

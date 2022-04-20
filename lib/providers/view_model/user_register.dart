@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:flutter_riverpod/all.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:livle/config/config.dart';
@@ -16,7 +16,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 final ChangeNotifierProvider<UserRegisterViewModel> userRegisterViewModelNotifierProvider = ChangeNotifierProvider<UserRegisterViewModel>(
-  (ProviderReference ref) => UserRegisterViewModel(
+  (ChangeNotifierProviderRef<UserRegisterViewModel> ref) => UserRegisterViewModel(
     userRepository: ref.watch(originUserProvider),
     artistRepository: ref.watch(artistsRepositoryProvider),
     moneyRepository: ref.watch(moneyRepositoryProvider),
@@ -26,10 +26,10 @@ final ChangeNotifierProvider<UserRegisterViewModel> userRegisterViewModelNotifie
 
 class UserRegisterViewModel extends ChangeNotifier {
   UserRegisterViewModel({
-    @required OriginUserRepository userRepository,
-    @required ArtistRepository artistRepository,
-    @required MoneyRepository moneyRepository,
-    @required ScheduleRepository scheduleRepository,
+    required OriginUserRepository userRepository,
+    required ArtistRepository artistRepository,
+    required MoneyRepository moneyRepository,
+    required ScheduleRepository scheduleRepository,
   })  : _userRepository = userRepository,
         _artistRepository = artistRepository,
         _moneyRepository = moneyRepository,
@@ -57,37 +57,34 @@ class UserRegisterViewModel extends ChangeNotifier {
 
   // カメラロールから画像を選択後、正方形にトリミングして表示
   Future<String> pickImage() async {
-    final PickedFile pickedFile = await picker.getImage(source: ImageSource.gallery);
+    final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
-      final File croppedImage = await ImageCropper.cropImage(
-        sourcePath: pickedFile.path,
-        aspectRatioPresets: <CropAspectRatioPreset>[
-          CropAspectRatioPreset.square,
-        ],
-        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
-        androidUiSettings: const AndroidUiSettings(
-          toolbarTitle: 'トリミング',
-          backgroundColor: AppColor.primaryColor,
-        ),
-        iosUiSettings: const IOSUiSettings(
-          title: 'トリミング',
-        ),
-      );
+      final File croppedImage = await ImageCropper().cropImage(
+            sourcePath: pickedFile.path,
+            aspectRatioPresets: <CropAspectRatioPreset>[
+              CropAspectRatioPreset.square,
+            ],
+            aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+            androidUiSettings: const AndroidUiSettings(
+              toolbarTitle: 'トリミング',
+              backgroundColor: AppColor.primaryColor,
+            ),
+            iosUiSettings: const IOSUiSettings(
+              title: 'トリミング',
+            ),
+          ) ??
+          File(pickedFile.path);
 
-      if (croppedImage != null) {
-        await FlutterImageCompress.compressAndGetFile(
-          croppedImage.absolute.path,
-          '${(await getTemporaryDirectory()).path}/${croppedImage.absolute.path}',
-          minWidth: 300,
-          minHeight: 300,
-          quality: 50,
-        );
-        changeIconImagePath(croppedImage.absolute.path);
-        return croppedImage.absolute.path;
-      } else {
-        return '';
-      }
+      await FlutterImageCompress.compressAndGetFile(
+        croppedImage.absolute.path,
+        '${(await getTemporaryDirectory()).path}/${croppedImage.absolute.path}',
+        minWidth: 300,
+        minHeight: 300,
+        quality: 50,
+      );
+      changeIconImagePath(croppedImage.absolute.path);
+      return croppedImage.absolute.path;
     } else {
       return '';
     }
@@ -96,7 +93,7 @@ class UserRegisterViewModel extends ChangeNotifier {
   // 登録ボタン押下後の処理
   Future<void> onPressedRegisterBtn(BuildContext context) async {
     // フォームバリデーション
-    if (formKey.currentState.validate()) {
+    if (formKey.currentState?.validate() ?? false) {
       AwesomeDialog(
         context: context,
         dialogType: DialogType.NO_HEADER,
@@ -134,17 +131,15 @@ class UserRegisterViewModel extends ChangeNotifier {
     }
   }
 
-  void setUserInfoToLocalState(Map<String, dynamic> doc) {
-    if (doc != null) {
-      _userRepository.originUser = _userRepository.originUser.copyWith(
-        name: doc['name'] as String,
-        description: doc['description'] as String,
-        id: doc['display_id'] as String,
-        pickedImage: doc['pickedImage'] as bool,
-        isBanned: doc['isBanned'] as bool,
-        isOfficial: doc['isOfficial'] as bool,
-      );
-    }
+  void setUserInfoToLocalState(Map<String, dynamic>? doc) {
+    _userRepository.originUser = _userRepository.originUser.copyWith(
+      name: doc?['name'] as String,
+      description: doc?['description'] as String,
+      id: doc?['display_id'] as String,
+      pickedImage: doc?['pickedImage'] as bool,
+      isBanned: doc?['isBanned'] as bool,
+      isOfficial: doc?['isOfficial'] as bool,
+    );
   }
 
   void changeId(String id) {

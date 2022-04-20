@@ -58,7 +58,7 @@ class _IconSelectorState extends State<IconSelector> {
 }
 
 class UserIdInput extends StatefulWidget {
-  const UserIdInput({Key key, this.onChanged}) : super(key: key);
+  const UserIdInput({Key? key, required this.onChanged}) : super(key: key);
 
   final Function onChanged;
 
@@ -67,14 +67,8 @@ class UserIdInput extends StatefulWidget {
 }
 
 class _UserIdInputState extends State<UserIdInput> {
-  String _textLength;
+  String _textLength = '0';
   final String _maxLength = '20';
-
-  @override
-  void initState() {
-    _textLength = '0';
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +120,7 @@ class _UserIdInputState extends State<UserIdInput> {
           ),
         ),
       ),
-      validator: (String value) => OriginValidators.userId(value, _maxLength),
+      validator: (String? value) => OriginValidators.userId(value ?? '', _maxLength),
       onChanged: (String value) {
         setState(() {
           _textLength = value.length.toString();
@@ -138,7 +132,7 @@ class _UserIdInputState extends State<UserIdInput> {
 }
 
 class UserNameInput extends StatefulWidget {
-  const UserNameInput({Key key, this.onChanged}) : super(key: key);
+  const UserNameInput({Key? key, required this.onChanged}) : super(key: key);
 
   final Function onChanged;
 
@@ -147,14 +141,8 @@ class UserNameInput extends StatefulWidget {
 }
 
 class _UserNameInputState extends State<UserNameInput> {
-  String _textLength;
+  String _textLength = '0';
   final String _maxLength = '20';
-
-  @override
-  void initState() {
-    _textLength = '0';
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -203,7 +191,7 @@ class _UserNameInputState extends State<UserNameInput> {
           ),
         ),
       ),
-      validator: (String value) => OriginValidators.userName(value, _maxLength),
+      validator: (String? value) => OriginValidators.userName(value ?? '', _maxLength),
       onChanged: (String value) {
         setState(() {
           _textLength = value.length.toString();
@@ -215,7 +203,7 @@ class _UserNameInputState extends State<UserNameInput> {
 }
 
 class UserDescTextField extends StatefulWidget {
-  const UserDescTextField({Key key, this.onChanged}) : super(key: key);
+  const UserDescTextField({Key? key, required this.onChanged}) : super(key: key);
 
   final Function onChanged;
 
@@ -224,14 +212,8 @@ class UserDescTextField extends StatefulWidget {
 }
 
 class _UserDescTextFieldState extends State<UserDescTextField> {
-  String _textLength;
+  String _textLength = '0';
   final String _maxLength = '100';
-
-  @override
-  void initState() {
-    _textLength = '0';
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -285,7 +267,7 @@ class _UserDescTextFieldState extends State<UserDescTextField> {
           ),
         ),
       ),
-      validator: (String value) => OriginValidators.userDesc(value, _maxLength),
+      validator: (String? value) => OriginValidators.userDesc(value ?? '', _maxLength),
       onChanged: (String value) {
         setState(() {
           _textLength = value.length.toString();

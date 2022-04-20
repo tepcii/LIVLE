@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:livle/providers/view_model/user_register.dart';
 import 'package:livle/view/components/tutorial/user_icon.dart';
 
-class ConfirmDialog extends ConsumerWidget {
-  const ConfirmDialog({Key key}) : super(key: key);
+class ConfirmDialog extends HookConsumerWidget {
+  const ConfirmDialog({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final UserRegisterViewModel userState = watch(userRegisterViewModelNotifierProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final UserRegisterViewModel userState = ref.watch(userRegisterViewModelNotifierProvider);
     return Container(
       child: Column(
         children: <Widget>[

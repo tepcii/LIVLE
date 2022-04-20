@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:livle/config/config.dart';
 import 'package:livle/providers/navigation.dart';
 import 'package:livle/view/components/common/bottom_bar.dart';
@@ -10,7 +10,7 @@ import 'package:livle/view/pages/community.dart';
 import 'package:livle/view/pages/money.dart';
 import 'package:livle/view/pages/schedule.dart';
 
-class Home extends ConsumerWidget {
+class Home extends HookConsumerWidget {
   Home();
 
   final List<Widget> _pages = <Widget>[
@@ -21,8 +21,8 @@ class Home extends ConsumerWidget {
   ];
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final StateController<int> _pageIndex = watch(pageIndexProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final int _pageIndex = ref.watch(pageIndexProvider);
     return Scaffold(
       appBar: AppBar(
         actions: const <Widget>[
@@ -31,7 +31,7 @@ class Home extends ConsumerWidget {
         backgroundColor: AppColor.primaryColor,
       ),
       drawer: const OriginDrawer(),
-      body: _pages[_pageIndex.state],
+      body: _pages[_pageIndex],
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       bottomNavigationBar: BottomBar(),
     );
